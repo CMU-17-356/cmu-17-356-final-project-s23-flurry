@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
+    "watch": "nodemon -q src/index.js",
     "test": "NODE_ENV=test mocha --exit",
     "deploy_test": "NODE_ENV=deploy_test mocha --exit --delayed"
   },
@@ -28,7 +29,7 @@
     "concurrently": "^7.6.0",
     "eslint": "^8.36.0",
     "mocha": "^10.2.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "supertest": "^6.3.3"
   }
 }

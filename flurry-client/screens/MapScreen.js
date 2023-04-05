@@ -19,7 +19,13 @@ export default class MapScreen extends React.Component {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
-        zoomControlEnabled={true} /> 
+        zoomControlEnabled={true} 
+        initialRegion={{
+          latitude: 40.443652, 
+          longitude: -79.942840,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}/> 
       </View>
     );
   }

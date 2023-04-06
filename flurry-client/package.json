@@ -6,16 +6,27 @@
     "start": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "test": "jest",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.json",
+    "lint-and-fix": "eslint . --ext .ts,.tsx,.js,.jsx,.json --fix"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "eslintConfig": {
+    "extends": "universe/native"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "6.7.3",
+    "eslint-config-universe": "^11.2.0",
     "expo": "~48.0.10",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
+    "jest-expo": "^48.0.2",
     "react": "18.2.0",
     "react-native": "0.71.6",
-    "react-native-maps": "1.3.2",
-    "expo-updates": "~0.16.4",
-    "@react-native-community/datetimepicker": "6.7.3"
+    "react-native-maps": "1.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

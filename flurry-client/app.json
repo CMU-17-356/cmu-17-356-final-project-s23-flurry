@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "flurry-client",
+    "name": "Flurry",
     "slug": "flurry-client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,12 +15,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyAnFqog6GdqlnYvcAYSP37bFI3cjfoFk24"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAnFqog6GdqlnYvcAYSP37bFI3cjfoFk24"
+        }
       }
     },
     "web": {

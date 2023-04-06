@@ -5,12 +5,15 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         height: '100%',
         width: '100%',
+        paddingTop: '5%'
     },
     map: {
+        position: 'absolute',
+        bottom: 0,
         height: '80%',
-        width: '100%',
+        width: '100%'
     }
   });

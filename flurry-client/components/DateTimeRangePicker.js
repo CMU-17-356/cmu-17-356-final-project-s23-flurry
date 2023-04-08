@@ -1,111 +1,94 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
-const MIN_DATE = new Date(2021, 0, 1);
-const MAX_DATE = new Date();
-
-class DateTimeRangePicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDate: MIN_DATE,
-      endDate: MAX_DATE,
-      showStartDatePicker: false,
-      showEndDatePicker: false,
-    };
-  }
-
-  onStartDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.startDate;
-    this.setState({ startDate: currentDate });
+const MIN_DATE = moment('2021-01-01', 'YYYY-MM-DD').toDate();
+const MAX_DATE = moment().toDate();
+export default class DateTimeRangePicker extends React.Component {
+  state = {
+    startDate: MIN_DATE,
+    endDate: MAX_DATE,
   };
 
-  onEndDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.endDate;
-    this.setState({ endDate: currentDate });
+  handleValuesChange = (values) => {
+    const [start, end] = values;
+    this.setState({
+      startDate: moment(MIN_DATE).add(start, 'days').toDate(),
+      endDate: moment(MIN_DATE).add(end, 'days').toDate(),
+    });
+
+    // Call the onDateRangeChange prop with the selected start and end dates
+    this.props.onDateRangeChange(startDate, endDate);
+  };
+
+  formatRangeText = () => {
+    const { startDate, endDate } = this.state;
+    const formattedStartDate = moment(startDate).format('MMM DD, YYYY');
+    const formattedEndDate = moment(endDate).format('MMM DD, YYYY');
+    return `${formattedStartDate} - ${formattedEndDate}`;
   };
 
   render() {
-    const { startDate, endDate, showStartDatePicker, showEndDatePicker } = this.state;
-
+    const { startDate, endDate } = this.state;
+    const startDays = moment(endDate).diff(MIN_DATE, 'days');
+    const endDays = moment(MAX_DATE).diff(startDate, 'days');
     return (
       <View style={styles.container}>
-        <View style={styles.sliderContainer}>
-          <Text>Start Date: {startDate.toDateString()}</Text>
-          <MultiSlider
-            values={[startDate.getTime(), endDate.getTime()]}
-            sliderLength={300}
-            onValuesChange={(values) => {
-              this.setState({
-                startDate: new Date(values[0]),
-                endDate: new Date(values[1]),
-              });
-            }}
-            min={MIN_DATE.getTime()}
-            max={MAX_DATE.getTime()}
-            step={86400000}
-            allowOverlap={false}
-            snapped
-          />
-          <Text>End Date: {endDate.toDateString()}</Text>
+        
+        <MultiSlider
+          values={[0, startDays + endDays]}
+          sliderLength={250}
+          onValuesChange={this.handleValuesChange}
+          min={0}
+          max={startDays + endDays}
+          allowOverlap={false}
+          snapped
+          markerStyle={styles.sliderMarkerStyle}
+          selectedStyle={styles.sliderSelectedStyle}
+          unselectedStyle={styles.sliderUnselectedStyle}
+          trackStyle={styles.sliderTrackStyle}
+        />
+        <View style={styles.rangeTextContainer}>
+          <Text style={styles.rangeText}>{this.formatRangeText()}</Text>
         </View>
-        {showStartDatePicker && (
-          <DateTimePicker
-            testID="startDatePicker"
-            value={startDate}
-            mode="date"
-            is24Hour={true}
-            display="spinner"
-            minimumDate={MIN_DATE}
-            maximumDate={endDate}
-            onChange={this.onStartDateChange}
-          />
-        )}
-        {showEndDatePicker && (
-          <DateTimePicker
-            testID="endDatePicker"
-            value={endDate}
-            mode="date"
-            is24Hour={true}
-            display="spinner"
-            minimumDate={startDate}
-            maximumDate={MAX_DATE}
-            onChange={this.onEndDateChange}
-          />
-        )}
       </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  sliderContainer: {
-    flexDirection: 'column-reverse',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    height: 150,
-    marginHorizontal: 20,
-    marginTop: 20,
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  dateDisplay: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  sliderMarkerStyle: {
+    height: 20,
+    width: 20,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'black',
   },
-  sliderWrapper: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
+  sliderSelectedStyle: {
+    backgroundColor: 'blue',
+  },
+  sliderUnselectedStyle: {
+    backgroundColor: 'lightblue',
+  },
+  sliderTrackStyle: {
+    height: 4,
+    backgroundColor: 'lightgray',
+  },
+  rangeTextContainer: {
+    marginTop: 10,
+  },
+  rangeText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
-
-
-
-
-export default DateTimeRangePicker;

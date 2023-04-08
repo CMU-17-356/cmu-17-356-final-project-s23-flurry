@@ -29,7 +29,7 @@ jobs:
     - name: Check dependencies 
       run: |
         cd flurry-client
-        npm i npm-check
+        npm install -g npm-check
         npm-check
     - name: Run tests
       run: | 

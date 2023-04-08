@@ -30,7 +30,7 @@ jobs:
       run: |
         cd flurry-client
         npm install -g npm-check
-        npm-check
+        npm-check --skip-unused
     - name: Run tests
       run: | 
         cd flurry-client

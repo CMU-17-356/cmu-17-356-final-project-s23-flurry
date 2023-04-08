@@ -26,6 +26,10 @@ jobs:
       run: |
         cd flurry-client
         npm run lint
+    - name: Check dependencies 
+      run: |
+        cd flurry-client
+        npm-check
     - name: Run tests
       run: | 
         cd flurry-client

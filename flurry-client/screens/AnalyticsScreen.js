@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import DateTimeRangePicker from '../components/DateTimeRangePicker';
 import DriverDropdown from '../components/DriverDropdown';
 import SlipSeverityChart from '../components/SlipSeverityChart';
@@ -16,22 +16,25 @@ export default class AnalyticsScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Pick a date range for Analytics</Text>
-        <DateTimeRangePicker onDateRangeChange={this.handleDateRangeChange} />
-        <DriverDropdown onDriverSelect={this.handleDriverSelect} />
-        <SlipSeverityChart data={slipIncidents} />
-      </View>
+      <ScrollView  horizontal={false}  contentContainerStyle={styles.container}>
+       
+          <Text style={styles.title}>Pick a date range for Analytics</Text>
+          <DateTimeRangePicker onDateRangeChange={this.handleDateRangeChange} />
+          <DriverDropdown onDriverSelect={this.handleDriverSelect} />
+          <SlipSeverityChart data={slipIncidents} />
+ 
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 20,
-    marginTop: 20,
+    paddingHorizontal: 10,
+    marginTop:30,
   },
   title: {
     fontSize: 18,

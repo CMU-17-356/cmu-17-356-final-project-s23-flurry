@@ -29,12 +29,12 @@ jobs:
       run: |
         cd server
         npm run lint-fix
+    - name: Check dependencies 
+      run: |
+        cd server
+        npm install -g npm-check
+        npm-check --skip-unused
     - name: Run tests
       run: | 
         cd server
         npm run test
-    - name: Build app
-      timeout-minutes: 1
-      run: |
-        cd server
-        npm run watch

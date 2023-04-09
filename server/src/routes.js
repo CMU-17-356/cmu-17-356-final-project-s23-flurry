@@ -1,6 +1,6 @@
-import { Router } from 'express'
+import { Router } from 'express';
 
-const router = Router()
+const router = Router(); // eslint-disable-line
 
 // const Users = new UsersController()
 // const Products = new ProductsController()
@@ -25,4 +25,4 @@ const router = Router()
 
 // router.get('/merchants/drones', Merchants.getDrones)
 
-export { router }
+export {router};

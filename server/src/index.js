@@ -21,11 +21,11 @@ if (app.get('env') === 'development') {
   console.log(`⚡️connecting to test db (deploy)`);
   dbUrl = 'mongodb+srv://xinyao:20001028@cluster0.kwf9tsb.mongodb.net/flurry_testdb?retryWrites=true&w=majority';
 }
-mongoose
-    .connect(dbUrl)
-    .catch((e) => {
-      console.error('Connection error', e.message);
-    });
+await mongoose
+  .connect(dbUrl)
+  .catch((e) => {
+    console.error('Connection error', e.message);
+  });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

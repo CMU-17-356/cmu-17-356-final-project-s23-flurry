@@ -8,7 +8,7 @@ import { slipIncidents } from '../data/dummyData';
 export default class AnalyticsScreen extends React.Component {
   handleDateRangeChange = (startDate, endDate) => {
     // Do something with the selected start and end dates
-    console.log('Selected date range:', startDate, endDate);
+    //console.log('Selected date range:', startDate, endDate);
   };
   handleDriverSelect = (driverName) => {
     setSelectedDriver(driverName);
@@ -17,7 +17,7 @@ export default class AnalyticsScreen extends React.Component {
   render() {
     return (
       <SectionList
-        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', marginTop:30 }}
+        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center'}}
         sections={[
           {
             title: 'Pick a date range for Analytics',
@@ -33,7 +33,7 @@ export default class AnalyticsScreen extends React.Component {
           },
         ]}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <View>{item}</View>}
+        renderItem={({ item }) => <View style={styles.item}>{item}</View>}
         renderSectionHeader={({ section: { title } }) => (
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
@@ -52,9 +52,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 30,
   },
+  item: {
+    marginVertical: 10,
+  },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginVertical: 10,
     marginBottom: 10,
   },
 });

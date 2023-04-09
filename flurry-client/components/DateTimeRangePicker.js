@@ -19,7 +19,7 @@ export default class DateTimeRangePicker extends React.Component {
     });
 
     // Call the onDateRangeChange prop with the selected start and end dates
-    this.props.onDateRangeChange(startDate, endDate);
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
   };
 
   formatRangeText = () => {

@@ -11,11 +11,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      
-      {/* 
-      <MapScreen />
+     <MapScreen />
+    {/* <AnalyticsScreen />
     */}
-    <AnalyticsScreen />
       <StatusBar style="auto" />
     </View>
   );

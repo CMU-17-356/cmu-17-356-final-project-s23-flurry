@@ -27,7 +27,8 @@ const DriverDropdown = ({ onSelectDriver }) => {
   const renderDriverItem = ({ item }) => (
     <TouchableOpacity
       style={styles.driverItem}
-      onPress={() => handleDriverSelect(item)}
+      //onPress={() => handleDriverSelect(item)
+      
     >
       <Text style={styles.driverName}>{item.name}</Text>
     </TouchableOpacity>

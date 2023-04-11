@@ -6,26 +6,39 @@
     "start": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "test": "jest",
+    "lint": "eslint . --ext .js",
+    "lint-and-fix": "eslint . --ext .js --fix"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "eslintConfig": {
+    "extends": "universe/native"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-community/slider": "^4.4.2",
+    "eslint-config-universe": "^11.2.0",
     "expo": "~48.0.10",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
+    "jest-expo": "^48.0.2",
     "react": "18.2.0",
     "react-native": "0.71.6",
     "react-native-chart-kit": "^6.12.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-maps": "1.3.2",
     "react-native-range-slider-expo": "^1.4.3",
-    "react-native-svg": "^13.9.0",
+    "react-native-svg": "13.4.0",
     "rn-range-slider": "^2.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@babel/eslint-parser": "^7.21.3",
+    "@storybook/preset-typescript": "^3.0.0"
   },
   "private": true
 }

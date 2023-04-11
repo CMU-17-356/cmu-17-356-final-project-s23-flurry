@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { PieChart } from "react-native-chart-kit";
 
 export default function SlipSeverityChart(props) {
   const { data } = props;
@@ -26,28 +26,28 @@ export default function SlipSeverityChart(props) {
 
   const chartData = [
     {
-      name: 'Severity <= 30',
+      name: "Severity <= 30",
       count: slipCount[30],
-      color: '#2ecc71',
-      legendFontColor: '#2ecc71',
+      color: "#2ecc71",
+      legendFontColor: "#2ecc71",
     },
     {
-      name: 'Severity <= 50',
+      name: "Severity <= 50",
       count: slipCount[50],
-      color: '#3498db',
-      legendFontColor: '#3498db',
+      color: "#3498db",
+      legendFontColor: "#3498db",
     },
     {
-      name: 'Severity <= 70',
+      name: "Severity <= 70",
       count: slipCount[70],
-      color: '#f1c40f',
-      legendFontColor: '#f1c40f',
+      color: "#f1c40f",
+      legendFontColor: "#f1c40f",
     },
     {
-      name: 'Severity <= 100',
+      name: "Severity <= 100",
       count: slipCount[100],
-      color: '#e74c3c',
-      legendFontColor: '#e74c3c',
+      color: "#e74c3c",
+      legendFontColor: "#e74c3c",
     },
   ];
 
@@ -60,9 +60,9 @@ export default function SlipSeverityChart(props) {
           width={400}
           height={220}
           chartConfig={{
-            backgroundColor: '#fff',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
+            backgroundColor: "#fff",
+            backgroundGradientFrom: "#fff",
+            backgroundGradientTo: "#fff",
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -83,20 +83,20 @@ export default function SlipSeverityChart(props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 10,
-    borderColor: '#000',
+    borderColor: "#000",
     borderWidth: 1,
     padding: 10,
   },
   chartContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
 });

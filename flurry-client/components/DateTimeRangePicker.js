@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import moment from 'moment';
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import moment from "moment";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-const MIN_DATE = moment('2021-01-01', 'YYYY-MM-DD').toDate();
+const MIN_DATE = moment("2021-01-01", "YYYY-MM-DD").toDate();
 const MAX_DATE = moment().toDate();
 export default class DateTimeRangePicker extends React.Component {
   state = {
@@ -14,8 +14,8 @@ export default class DateTimeRangePicker extends React.Component {
   handleValuesChange = (values) => {
     const [start, end] = values;
     this.setState({
-      startDate: moment(MIN_DATE).add(start, 'days').toDate(),
-      endDate: moment(MIN_DATE).add(end, 'days').toDate(),
+      startDate: moment(MIN_DATE).add(start, "days").toDate(),
+      endDate: moment(MIN_DATE).add(end, "days").toDate(),
     });
 
     // Call the onDateRangeChange prop with the selected start and end dates
@@ -24,18 +24,17 @@ export default class DateTimeRangePicker extends React.Component {
 
   formatRangeText = () => {
     const { startDate, endDate } = this.state;
-    const formattedStartDate = moment(startDate).format('MMM DD, YYYY');
-    const formattedEndDate = moment(endDate).format('MMM DD, YYYY');
+    const formattedStartDate = moment(startDate).format("MMM DD, YYYY");
+    const formattedEndDate = moment(endDate).format("MMM DD, YYYY");
     return `${formattedStartDate} - ${formattedEndDate}`;
   };
 
   render() {
     const { startDate, endDate } = this.state;
-    const startDays = moment(endDate).diff(MIN_DATE, 'days');
-    const endDays = moment(MAX_DATE).diff(startDate, 'days');
+    const startDays = moment(endDate).diff(MIN_DATE, "days");
+    const endDays = moment(MAX_DATE).diff(startDate, "days");
     return (
       <View style={styles.container}>
-        
         <MultiSlider
           values={[0, startDays + endDays]}
           sliderLength={250}
@@ -59,36 +58,36 @@ export default class DateTimeRangePicker extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   sliderMarkerStyle: {
     height: 20,
     width: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   sliderSelectedStyle: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
   },
   sliderUnselectedStyle: {
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
   },
   sliderTrackStyle: {
     height: 4,
-    backgroundColor: 'lightgray',
+    backgroundColor: "lightgray",
   },
   rangeTextContainer: {
     marginTop: 10,
   },
   rangeText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

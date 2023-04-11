@@ -21,7 +21,7 @@ jobs:
     - name: Install and check node packages
       run: |
         cd flurry-client
-        npm ci
+        npm ci --legacy-peer-deps
     - name: Run linter
       run: |
         cd flurry-client

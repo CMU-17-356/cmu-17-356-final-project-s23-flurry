@@ -28,7 +28,6 @@ const DriverDropdown = ({ onSelectDriver }) => {
     <TouchableOpacity
       style={styles.driverItem}
       //onPress={() => handleDriverSelect(item)
-      
     >
       <Text style={styles.driverName}>{item.name}</Text>
     </TouchableOpacity>
@@ -65,16 +64,13 @@ const DriverDropdown = ({ onSelectDriver }) => {
             <Text style={styles.boxTitle}>Analytics Summary</Text>
             <View style={styles.boxContent}>
               <Text style={styles.boxData}>
-                Driver with the most number of slip incidents:{" "}
-                Max
+                Driver with the most number of slip incidents: Max
               </Text>
               <Text style={styles.boxData}>
-                Driver with the least number of slip incidents:{" "}
-                Smith
+                Driver with the least number of slip incidents: Smith
               </Text>
               <Text style={styles.boxData}>
-                Total number of slips in the given date range:{" "}
-                23
+                Total number of slips in the given date range: 23
               </Text>
             </View>
           </View>
@@ -131,20 +127,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   box: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     margin: 16,
     padding: 16,
   },
   boxTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
   },
   boxContent: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   boxData: {
     fontSize: 16,

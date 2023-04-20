@@ -10,8 +10,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <MapScreen /> */}
-      <AnalyticsScreen />
+      <MapScreen />
+      {/* <AnalyticsScreen /> */}
       <StatusBar style="auto" />
     </View>
   );

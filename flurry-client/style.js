@@ -16,4 +16,5 @@ export default StyleSheet.create({
     height: "80%",
     width: "100%",
   },
+  themedBlue: "#4169E0"
 });

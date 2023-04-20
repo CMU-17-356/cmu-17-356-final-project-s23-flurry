@@ -2,14 +2,14 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
 import { Button, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { slipIncidents } from "../data/dummyData";
 
+import { slipIncidents } from "../data/dummyData";
 import styles from "../style";
 
 export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
-    const initStartDate = new Date('2020-12-31T12:00:00');
+    const initStartDate = new Date("2020-12-31T12:00:00");
     const initEndDate = new Date();
     this.state = {
       startDate: initStartDate,
@@ -23,29 +23,27 @@ export default class MapScreen extends React.Component {
   }
 
   refreshMarkersList(startDate, endDate) {
-    newMarkerList = [];
+    const newMarkerList = [];
     slipIncidents.forEach((incident) => {
       if (incident.timestamp <= endDate && incident.timestamp >= startDate) {
-        newMarkerList.push(
-          {
-            title: "Slip score: " + incident.slip_score,
-            coordinates: {
-              latitude: incident.latitude,
-              longitude: incident.longitude,
-            },
-            description: "Driver: " + 
-              incident.driver_id + 
-              "\n" + 
-              incident.timestamp.toLocaleString([], {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-
-              })
-          }
-        )
+        newMarkerList.push({
+          title: "Slip score: " + incident.slip_score,
+          coordinates: {
+            latitude: incident.latitude,
+            longitude: incident.longitude,
+          },
+          description:
+            "Driver: " +
+            incident.driver_id +
+            "\n" +
+            incident.timestamp.toLocaleString([], {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+        });
       }
     });
     return newMarkerList;
@@ -180,7 +178,7 @@ export default class MapScreen extends React.Component {
           }}
         >
           {this.state.markers.map((marker, ind) => (
-            <Marker 
+            <Marker
               key={ind}
               coordinate={marker.coordinates}
               title={marker.title}

@@ -1,6 +1,6 @@
 import { model } from 'mongoose';
 
-const recordSchema = ({
+const slipSchema = ({
   id: {
     type: String,
     required: true,
@@ -46,5 +46,5 @@ const recordSchema = ({
   },
 });
 
-const Record = model('Record', recordSchema);
-export { Record };
+const Slip = model('Slip', slipSchema);
+export { Slip };

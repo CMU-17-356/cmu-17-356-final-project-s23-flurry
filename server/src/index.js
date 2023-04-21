@@ -7,7 +7,6 @@ import cors from 'cors';
 dotenv.config();
 const app = express();
 const port = process.env.PORT; // eslint-disable-line
-const companyID = 'flurry';
 
 // connect to db
 let dbUrl = null;
@@ -51,4 +50,4 @@ const server = app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
-export { app, server, companyID }; // for testing
+export { app, server }; // for testing

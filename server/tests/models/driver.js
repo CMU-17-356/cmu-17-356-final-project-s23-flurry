@@ -26,4 +26,13 @@ describe('Testing Driver model', function() {
       done();
     })
   });
+
+  it('3. Invalid if missing driver id', function(done) {
+    const d = new Driver({name: 'Driver', company_id: "c1"});
+    d.validate().then(() => done(new Error("Should have failed validation")))
+    .catch(err => {
+      expect(err.errors.id).to.exist;
+      done();
+    })
+  });
 });

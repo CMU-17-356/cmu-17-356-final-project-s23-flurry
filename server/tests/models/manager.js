@@ -15,12 +15,13 @@ describe('Testing Manager model', function() {
     })
     .catch(err => {
       done(new Error(`Should have passed validation, instead got ${err.message}`));
-    })
+    });
   });
 
   it('2. Invalid if id is not alphanumeric', function(done) {
     const m = new Manager({id: 'm1.', name: 'Admin', company_id: "c1"});
-    m.validate().then(() => done(new Error("Should have failed validation"))).catch(err => {
+    m.validate().then(() => done(new Error("Should have failed validation")))
+    .catch(err => {
       expect(err.errors.id).to.exist;
       done();
     });

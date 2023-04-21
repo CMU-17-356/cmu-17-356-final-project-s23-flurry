@@ -1,7 +1,7 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import moment from "moment";
 import React from "react";
-import { View, Text, StyleSheet, Button} from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default class DateTimeRangePicker extends React.Component {
@@ -23,6 +23,7 @@ export default class DateTimeRangePicker extends React.Component {
       startDate: currentDate,
       startShow: false,
     });
+    this.props.onDateRangeChange(currentDate, this.state.endDate);
   };
   onEndDateChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -30,6 +31,7 @@ export default class DateTimeRangePicker extends React.Component {
       endDate: currentDate,
       endShow: false,
     });
+    this.props.onDateRangeChange(this.state.startDate, currentDate);
   };
 
   showPicker = (mode, isStart) => {
@@ -41,18 +43,6 @@ export default class DateTimeRangePicker extends React.Component {
     });
   };
 
-
-  handleValuesChange = (values) => {
-    const [start, end] = values;
-    this.setState({
-      startDate: moment(MIN_DATE).add(start, "days").toDate(),
-      endDate: moment(MIN_DATE).add(end, "days").toDate(),
-    });
-
-    // Call the onDateRangeChange prop with the selected start and end dates
-    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
-  };
-
   formatRangeText = () => {
     const { startDate, endDate } = this.state;
     const formattedStartDate = moment(startDate).format("MMM DD, YYYY");
@@ -62,94 +52,94 @@ export default class DateTimeRangePicker extends React.Component {
 
   render() {
     return (
-    <View
-  style={{
-    flexDirection: "row",
-  }}
->
-  <View
-    style={{
-      flexDirection: "column",
-      alignItems: "center",
-      width: "40%",
-    }}
-  >
-    <Text>Start Date</Text>
-    <Button
-      onPress={() => this.showPicker("date", true)}
-      title={this.state.startDate.toLocaleString([], {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      })}
-    />
-    <Button
-      onPress={() => this.showPicker("time", true)}
-      title={this.state.startDate.toLocaleString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}
-    />
-    {this.state.startShow && (
       <View
         style={{
           flexDirection: "row",
         }}
       >
-        <Text>Select: </Text>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={this.state.startDate}
-          mode={this.state.startMode}
-          is24Hour={true}
-          onChange={this.onStartDateChange}
-        />
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            width: "40%",
+            justifyContent: "center" 
+          }}
+        >
+          <Text>Start Date</Text>
+          <Button
+            onPress={() => this.showPicker("date", true)}
+            title={this.state.startDate.toLocaleString([], {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })}
+          />
+          <Button
+            onPress={() => this.showPicker("time", true)}
+            title={this.state.startDate.toLocaleString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          />
+          {this.state.startShow && (
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Text>Select: </Text>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={this.state.startDate}
+                mode={this.state.startMode}
+                is24Hour={true}
+                onChange={this.onStartDateChange}
+              />
+            </View>
+          )}
+        </View>
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            width: "40%",
+            justifyContent: "center" 
+          }}
+        >
+          <Text>End Date</Text>
+          <Button
+            onPress={() => this.showPicker("date", false)}
+            title={this.state.endDate.toLocaleString([], {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })}
+          />
+          <Button
+            onPress={() => this.showPicker("time", false)}
+            title={this.state.endDate.toLocaleString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          />
+          {this.state.endShow && (
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Text>Select: </Text>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={this.state.endDate}
+                mode={this.state.endMode}
+                is24Hour={true}
+                onChange={this.onEndDateChange}
+              />
+            </View>
+          )}
+        </View>
       </View>
-    )}
-  </View>
-  <View
-    style={{
-      flexDirection: "column",
-      alignItems: "center",
-      width: "40%",
-    }}
-  >
-    <Text>End Date</Text>
-    <Button
-      onPress={() => this.showPicker("date", false)}
-      title={this.state.endDate.toLocaleString([], {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      })}
-    />
-    <Button
-      onPress={() => this.showPicker("time", false)}
-      title={this.state.endDate.toLocaleString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}
-    />
-    {this.state.endShow && (
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <Text>Select: </Text>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={this.state.endDate}
-          mode={this.state.endMode}
-          is24Hour={true}
-          onChange={this.onEndDateChange}
-        />
-      </View>
-    )}
-  </View>
-</View>
-);
+    );
+  }
 }
-
-}
-

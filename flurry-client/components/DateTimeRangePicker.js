@@ -55,6 +55,7 @@ export default class DateTimeRangePicker extends React.Component {
       <View
         style={{
           flexDirection: "row",
+          justifyContent: "center", 
         }}
       >
         <View

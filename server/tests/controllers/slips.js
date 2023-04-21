@@ -1,11 +1,22 @@
 /* eslint-disable max-len */
 import { app, server } from '../../src/index.js';
 import { Slip } from "../../src/models/slip.js";
+import { Driver } from '../../src/models/driver.js';
 import { expect } from 'chai';
 import { describe, it, beforeEach, after, afterEach } from 'mocha';
 import request from 'supertest';
 
 describe('Testing Slips controller', function() {
+  before(function (done) {
+    const d1 = new Driver({id: 'd1', name: 'Driver', company_id: "c1"});
+    const d2 = new Driver({id: 'd2', name: 'Driver (2)', company_id: "c1"});
+    d1.save().then(() => {
+      d2.save().then(() => {
+        done();
+      }).catch(err => done(err))
+    }).catch(err => done(err))
+  });
+
   describe('View slip by ID', function() {
     it('1. View an existing slip', function (done) {
       const s = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date('2023-01-30T23:05:20.000-08:00'), driver_id: 'd1', slip_score: 50.88});
@@ -37,7 +48,7 @@ describe('Testing Slips controller', function() {
     beforeEach(function (done) {
       const s1 = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date(1645500000000), driver_id: 'd1', slip_score: 50.88});
       const s2 = new Slip({id: 's2', latitude: -43, longitude: 37.35, timestamp: new Date(1518200000000), driver_id: 'd2', slip_score: 73.92});
-      const s3 = new Slip({id: 's3', latitude: 0, longitude: 3.97, timestamp: new Date(1037300000000), driver_id: 'd3', slip_score: 99.99});
+      const s3 = new Slip({id: 's3', latitude: 0, longitude: 3.97, timestamp: new Date(1037300000000), driver_id: 'd1', slip_score: 99.99});
       s1.save().then(() => {
         s2.save().then(() => {
           s3.save().then(() => {
@@ -53,9 +64,9 @@ describe('Testing Slips controller', function() {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.length(3);
-          expect(res.body[0].driver_id).to.equal('d1'); 
-          expect(res.body[1].driver_id).to.equal('d2'); 
-          expect(res.body[2].driver_id).to.equal('d3'); 
+          expect(res.body[0].id).to.equal('s1'); 
+          expect(res.body[1].id).to.equal('s2'); 
+          expect(res.body[2].id).to.equal('s3'); 
           done();
         }).catch(err => done(err))
     });
@@ -66,8 +77,8 @@ describe('Testing Slips controller', function() {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.length(2);
-          expect(res.body[0].driver_id).to.equal('d2'); 
-          expect(res.body[1].driver_id).to.equal('d3'); 
+          expect(res.body[0].id).to.equal('s2'); 
+          expect(res.body[1].id).to.equal('s3'); 
           done();
         }).catch(err => done(err))
     });
@@ -78,7 +89,7 @@ describe('Testing Slips controller', function() {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.length(1);
-          expect(res.body[0].driver_id).to.equal('d1'); 
+          expect(res.body[0].id).to.equal('s1'); 
           done();
         }).catch(err => done(err))
     });
@@ -89,8 +100,8 @@ describe('Testing Slips controller', function() {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.length(2);
-          expect(res.body[0].driver_id).to.equal('d1'); 
-          expect(res.body[1].driver_id).to.equal('d2'); 
+          expect(res.body[0].id).to.equal('s1'); 
+          expect(res.body[1].id).to.equal('s2'); 
           done();
         }).catch(err => done(err))
     });

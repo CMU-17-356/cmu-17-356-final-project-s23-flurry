@@ -1,10 +1,12 @@
-import { model } from 'mongoose';
+import { model, Schema } from 'mongoose';
+import { Driver } from './driver.js';
 
-const slipSchema = ({
+const slipSchema = Schema({
   id: {
     type: String,
     required: true,
     match: /^[a-z0-9]+$/,
+    unique: true,
   },
   latitude: {
     type: Number,
@@ -46,5 +48,26 @@ const slipSchema = ({
   },
 });
 
+// validate referential integrity
+slipSchema.post('validate', function(doc, next) {
+  Driver.findOne({id: doc.driver_id}).then(d => {
+    if (d) {
+      next()
+    } else {
+      next(new Error(`Invalid reference: no driver with id ${doc.driver_id} found`))
+    }
+  }).catch(err => next(err))
+});
+
+// validate unique id: https://mongoosejs.com/docs/middleware.html#error-handling-middleware
+slipSchema.post('save', function(error, doc, next) {
+  if (error.name === 'MongoServerError' && error.code === 11000) {
+    next(new Error(`Duplicate key: id ${doc.id} already exists`));
+  } else {
+    next();
+  }
+});
+
 const Slip = model('Slip', slipSchema);
+
 export { Slip };

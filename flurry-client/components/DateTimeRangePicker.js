@@ -1,8 +1,8 @@
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import moment from "moment";
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from 'react-native-datepicker';
 
 export default class DateTimeRangePicker extends React.Component {
   constructor(props) {
@@ -55,7 +55,7 @@ export default class DateTimeRangePicker extends React.Component {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "center", 
+          justifyContent: "center",
         }}
       >
         <View
@@ -63,13 +63,12 @@ export default class DateTimeRangePicker extends React.Component {
             flexDirection: "column",
             alignItems: "center",
             width: "40%",
-            justifyContent: "center" 
           }}
         >
           <Text>Start Date</Text>
           <Button
             onPress={() => this.showPicker("date", true)}
-            title={this.state.startDate.toLocaleString([], {
+            title={this.state.startDate.toLocaleString("en-US", {
               year: "numeric",
               month: "numeric",
               day: "numeric",
@@ -77,7 +76,7 @@ export default class DateTimeRangePicker extends React.Component {
           />
           <Button
             onPress={() => this.showPicker("time", true)}
-            title={this.state.startDate.toLocaleString([], {
+            title={this.state.startDate.toLocaleString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
             })}
@@ -93,6 +92,7 @@ export default class DateTimeRangePicker extends React.Component {
                 testID="dateTimePicker"
                 value={this.state.startDate}
                 mode={this.state.startMode}
+                display="spinner"
                 is24Hour={true}
                 onChange={this.onStartDateChange}
               />
@@ -104,7 +104,6 @@ export default class DateTimeRangePicker extends React.Component {
             flexDirection: "column",
             alignItems: "center",
             width: "40%",
-            justifyContent: "center" 
           }}
         >
           <Text>End Date</Text>

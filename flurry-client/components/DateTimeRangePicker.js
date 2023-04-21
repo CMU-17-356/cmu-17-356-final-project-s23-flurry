@@ -1,15 +1,46 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import moment from "moment";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button} from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-const MIN_DATE = moment("2021-01-01", "YYYY-MM-DD").toDate();
-const MAX_DATE = moment().toDate();
 export default class DateTimeRangePicker extends React.Component {
-  state = {
-    startDate: MIN_DATE,
-    endDate: MAX_DATE,
+  constructor(props) {
+    super(props);
+    this.state = {
+      startDate: new Date(),
+      startMode: "date",
+      startShow: false,
+      endDate: new Date(),
+      endMode: "date",
+      endShow: false,
+    };
+  }
+
+  onStartDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    this.setState({
+      startDate: currentDate,
+      startShow: false,
+    });
   };
+  onEndDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    this.setState({
+      endDate: currentDate,
+      endShow: false,
+    });
+  };
+
+  showPicker = (mode, isStart) => {
+    this.setState({
+      startMode: isStart ? mode : this.state.startMode,
+      endMode: isStart ? this.state.endMode : mode,
+      startShow: isStart,
+      endShow: !isStart,
+    });
+  };
+
 
   handleValuesChange = (values) => {
     const [start, end] = values;
@@ -30,64 +61,95 @@ export default class DateTimeRangePicker extends React.Component {
   };
 
   render() {
-    const { startDate, endDate } = this.state;
-    const startDays = moment(endDate).diff(MIN_DATE, "days");
-    const endDays = moment(MAX_DATE).diff(startDate, "days");
     return (
-      <View style={styles.container}>
-        <MultiSlider
-          values={[0, startDays + endDays]}
-          sliderLength={250}
-          onValuesChange={this.handleValuesChange}
-          min={0}
-          max={startDays + endDays}
-          allowOverlap={false}
-          snapped
-          markerStyle={styles.sliderMarkerStyle}
-          selectedStyle={styles.sliderSelectedStyle}
-          unselectedStyle={styles.sliderUnselectedStyle}
-          trackStyle={styles.sliderTrackStyle}
+    <View
+  style={{
+    flexDirection: "row",
+  }}
+>
+  <View
+    style={{
+      flexDirection: "column",
+      alignItems: "center",
+      width: "40%",
+    }}
+  >
+    <Text>Start Date</Text>
+    <Button
+      onPress={() => this.showPicker("date", true)}
+      title={this.state.startDate.toLocaleString([], {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      })}
+    />
+    <Button
+      onPress={() => this.showPicker("time", true)}
+      title={this.state.startDate.toLocaleString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}
+    />
+    {this.state.startShow && (
+      <View
+        style={{
+          flexDirection: "row",
+        }}
+      >
+        <Text>Select: </Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={this.state.startDate}
+          mode={this.state.startMode}
+          is24Hour={true}
+          onChange={this.onStartDateChange}
         />
-        <View style={styles.rangeTextContainer}>
-          <Text style={styles.rangeText}>{this.formatRangeText()}</Text>
-        </View>
       </View>
-    );
-  }
+    )}
+  </View>
+  <View
+    style={{
+      flexDirection: "column",
+      alignItems: "center",
+      width: "40%",
+    }}
+  >
+    <Text>End Date</Text>
+    <Button
+      onPress={() => this.showPicker("date", false)}
+      title={this.state.endDate.toLocaleString([], {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      })}
+    />
+    <Button
+      onPress={() => this.showPicker("time", false)}
+      title={this.state.endDate.toLocaleString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}
+    />
+    {this.state.endShow && (
+      <View
+        style={{
+          flexDirection: "row",
+        }}
+      >
+        <Text>Select: </Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={this.state.endDate}
+          mode={this.state.endMode}
+          is24Hour={true}
+          onChange={this.onEndDateChange}
+        />
+      </View>
+    )}
+  </View>
+</View>
+);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  sliderMarkerStyle: {
-    height: 20,
-    width: 20,
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "black",
-  },
-  sliderSelectedStyle: {
-    backgroundColor: "blue",
-  },
-  sliderUnselectedStyle: {
-    backgroundColor: "lightblue",
-  },
-  sliderTrackStyle: {
-    height: 4,
-    backgroundColor: "lightgray",
-  },
-  rangeTextContainer: {
-    marginTop: 10,
-  },
-  rangeText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
+}
+

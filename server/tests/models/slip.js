@@ -3,7 +3,7 @@
 import { Slip } from '../../src/models/slip.js';
 import { Driver } from '../../src/models/driver.js';
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, before, afterEach } from 'mocha';
 
 describe('Testing Slip model', function() {
   before(function (done) {

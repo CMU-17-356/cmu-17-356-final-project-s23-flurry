@@ -3,7 +3,7 @@ import { app, server } from '../../src/index.js';
 import { Slip } from "../../src/models/slip.js";
 import { Driver } from '../../src/models/driver.js';
 import { expect } from 'chai';
-import { describe, it, beforeEach, after, afterEach } from 'mocha';
+import { describe, it, before, beforeEach, after, afterEach } from 'mocha';
 import request from 'supertest';
 
 describe('Testing Slips controller', function() {

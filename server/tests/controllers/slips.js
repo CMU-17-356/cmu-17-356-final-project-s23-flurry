@@ -2,7 +2,7 @@
 import { app, server } from '../../src/index.js';
 import { Slip } from "../../src/models/slip.js";
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, beforeEach, after, afterEach } from 'mocha';
 import request from 'supertest';
 
 describe('Testing Slips controller', function() {
@@ -106,5 +106,5 @@ describe('Testing Slips controller', function() {
     server.close();
     done();
   });
-  
+
 });

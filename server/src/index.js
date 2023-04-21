@@ -13,7 +13,7 @@ let dbUrl = null;
 if (app.get('env') === 'development') {
   console.log(`⚡️connecting to development db`);
   dbUrl = 'mongodb+srv://xinyao:20001028@cluster0.kwf9tsb.mongodb.net/flurry_devdb?retryWrites=true&w=majority';
-} else if (app.get('env') === 'test') {
+} else if (app.get('env') === 'local_test') {
   console.log(`⚡️connecting to test db (local)`);
   dbUrl = 'mongodb://localhost:27017/flurry_testdb';
 } else if (app.get('env') === 'deploy_test') {

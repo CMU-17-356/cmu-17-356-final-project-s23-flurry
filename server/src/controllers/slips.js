@@ -1,18 +1,18 @@
 import { Slip } from "../models/slip.js";
-import got from 'got'
+// import got from 'got'
 
 class SlipsController {
   getSlips = async (req, res) => {
     let conditions = {}
     if (req.query.driver_id != null) {
       conditions["driver_id"] = req.query.driver_id
-    };
+    }
     if (req.query.before != null) {
       conditions["timestamp"] = {$lte: new Date(Number(req.query.before))}
-    };
+    }
     if (req.query.after != null) {
       conditions["timestamp"] = {$gte: new Date(Number(req.query.after))}
-    };
+    }
 
     Slip.find(conditions)
       .then(slips => {

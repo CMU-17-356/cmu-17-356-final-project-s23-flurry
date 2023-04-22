@@ -10,9 +10,12 @@ describe('Testing Slips controller', function() {
   before(function (done) {
     const d1 = new Driver({id: 'd1', name: 'Driver', company_id: "c1"});
     const d2 = new Driver({id: 'd2', name: 'Driver (2)', company_id: "c1"});
+    const d3 = new Driver({id: 'd3', name: 'Driver (3)', company_id: "c2"});
     d1.save().then(() => {
       d2.save().then(() => {
-        done();
+        d3.save().then(() => {
+          done();
+        }).catch(err => done(err))
       }).catch(err => done(err))
     }).catch(err => done(err))
   });
@@ -44,11 +47,65 @@ describe('Testing Slips controller', function() {
     });
   });
 
+  describe('View slips filtered by company or driver id', function() {
+    beforeEach(function (done) {
+      const s1 = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date(1645500000000), driver_id: 'd1', slip_score: 50.88});
+      const s2 = new Slip({id: 's2', latitude: -43, longitude: 37.35, timestamp: new Date(1518200000000), driver_id: 'd2', slip_score: 73.92});
+      const s3 = new Slip({id: 's3', latitude: 0, longitude: 3.97, timestamp: new Date(1037300000000), driver_id: 'd3', slip_score: 99.99});
+      const s4 = new Slip({id: 's4', latitude: 12.54, longitude: -26.88, timestamp: new Date(1326600000000), driver_id: 'd1', slip_score: 15});
+      s1.save().then(() => {
+        s2.save().then(() => {
+          s3.save().then(() => {
+            s4.save().then(() => {
+              done();
+            }).catch(err => done(err))
+          }).catch(err => done(err))
+        }).catch(err => done(err))
+      }).catch(err => done(err))
+    });
+
+    it('1. View slips with company id', function (done) {
+      request(app)
+        .get(`/api/slips?company_id=c1`)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.length(3);
+          expect(res.body[0].id).to.equal('s1');
+          expect(res.body[1].id).to.equal('s2');
+          expect(res.body[2].id).to.equal('s4');
+          done();
+        }).catch(err => done(err))
+    });
+
+    it('2. View slips with driver id', function (done) {
+      request(app)
+        .get(`/api/slips?driver_id=d1`)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.length(2);
+          expect(res.body[0].id).to.equal('s1');
+          expect(res.body[1].id).to.equal('s4');
+          done();
+        }).catch(err => done(err))
+    });
+
+    it('3. View slips with multiple filters', function (done) {
+      request(app)
+        .get(`/api/slips?driver_id=d1&company_id=c1&before=1612000000000`)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.length(1);
+          expect(res.body[0].id).to.equal('s4');
+          done();
+        }).catch(err => done(err))
+    });
+  });
+
   describe('View all slips, optionally filter by date', function() {
     beforeEach(function (done) {
       const s1 = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date(1645500000000), driver_id: 'd1', slip_score: 50.88});
       const s2 = new Slip({id: 's2', latitude: -43, longitude: 37.35, timestamp: new Date(1518200000000), driver_id: 'd2', slip_score: 73.92});
-      const s3 = new Slip({id: 's3', latitude: 0, longitude: 3.97, timestamp: new Date(1037300000000), driver_id: 'd1', slip_score: 99.99});
+      const s3 = new Slip({id: 's3', latitude: 0, longitude: 3.97, timestamp: new Date(1037300000000), driver_id: 'd3', slip_score: 99.99});
       s1.save().then(() => {
         s2.save().then(() => {
           s3.save().then(() => {

@@ -1,5 +1,5 @@
 import { Slip } from "../models/slip.js";
-// import got from 'got'
+import { Driver } from "../models/driver.js";
 
 class SlipsController {
   getSlips = async (req, res) => {
@@ -15,14 +15,22 @@ class SlipsController {
     }
 
     Slip.find(conditions)
-      .then(slips => {
-        return res.status(200).json(slips)
+      .then(async slips => {
+        if (req.query.company_id != null) {
+          const filters = await Promise.all(slips.map(async (s) => {
+            const d = await Driver.findOne({id: s.driver_id})
+            return (d && d.company_id === req.query.company_id)
+          }));
+          return res.status(200).json(slips.filter((s, idx, arr) => {return filters[idx]}))
+        } else {
+          return res.status(200).json(slips)
+        }
       })
       .catch(err => {
         console.log("getSlips: " + err)
         return res.status(500).json(err)
       });
-  }
+  };
     
   getSlipById = async (req, res) => {
     const id = req.params.id
@@ -38,6 +46,6 @@ class SlipsController {
         return res.status(500).json(err)
       });
   }; 
-}
+};
   
 export { SlipsController };

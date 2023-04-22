@@ -1,145 +1,191 @@
-import moment from "moment";
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DatePicker from "react-native-datepicker";
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-export default class DateTimeRangePicker extends React.Component {
+class DateTimeRangePicker extends Component {
   constructor(props) {
     super(props);
+    const currentDate = new Date();
     this.state = {
-      startDate: new Date(),
-      startMode: "date",
-      startShow: false,
-      endDate: new Date(),
-      endMode: "date",
-      endShow: false,
+      isStartDatePickerVisible: false,
+      isStartTimePickerVisible: false,
+      isEndDatePickerVisible: false,
+      isEndTimePickerVisible: false,
+      startDate: new Date(2020, 0, 1, 0, 0),
+      endDate: currentDate,
     };
   }
 
-  onStartDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    this.setState({
-      startDate: currentDate,
-      startShow: false,
-    });
-    this.props.onDateRangeChange(currentDate, this.state.endDate);
-  };
-  onEndDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    this.setState({
-      endDate: currentDate,
-      endShow: false,
-    });
-    this.props.onDateRangeChange(this.state.startDate, currentDate);
+  showStartDatePicker = () => {
+    this.setState({ isStartDatePickerVisible: true });
   };
 
-  showPicker = (mode, isStart) => {
-    this.setState({
-      startMode: isStart ? mode : this.state.startMode,
-      endMode: isStart ? this.state.endMode : mode,
-      startShow: isStart,
-      endShow: !isStart,
-    });
+  hideStartDatePicker = () => {
+    this.setState({ isStartDatePickerVisible: false });
   };
 
-  formatRangeText = () => {
-    const { startDate, endDate } = this.state;
-    const formattedStartDate = moment(startDate).format("MMM DD, YYYY");
-    const formattedEndDate = moment(endDate).format("MMM DD, YYYY");
-    return `${formattedStartDate} - ${formattedEndDate}`;
+  handleStartDateConfirm = (date) => {
+    this.setState({ startDate: date });
+    this.hideStartDatePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+  };
+
+  showStartTimePicker = () => {
+    this.setState({ isStartTimePickerVisible: true });
+  };
+
+  hideStartTimePicker = () => {
+    this.setState({ isStartTimePickerVisible: false });
+  };
+
+  handleStartTimeConfirm = (time) => {
+    const { startDate } = this.state;
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const newStartDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      hours,
+      minutes
+    );
+    this.setState({ startDate: newStartDate });
+    this.hideStartTimePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+  };
+
+  showEndDatePicker = () => {
+    this.setState({ isEndDatePickerVisible: true });
+  };
+
+  hideEndDatePicker = () => {
+    this.setState({ isEndDatePickerVisible: false });
+  };
+
+  handleEndDateConfirm = (date) => {
+    this.setState({ endDate: date });
+    this.hideEndDatePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+  };
+
+  showEndTimePicker = () => {
+    this.setState({ isEndTimePickerVisible: true });
+  };
+
+  hideEndTimePicker = () => {
+    this.setState({ isEndTimePickerVisible: false });
+  };
+
+  handleEndTimeConfirm = (time) => {
+    const { endDate } = this.state;
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const newEndDate = new Date(
+      endDate.getFullYear(),
+      endDate.getMonth(),
+      endDate.getDate(),
+      hours,
+      minutes
+    );
+    this.setState({ endDate: newEndDate });
+    this.hideEndTimePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
   };
 
   render() {
+    const { startDate, endDate } = this.state;
+    const startDateFormat = startDate.toDateString();
+    const startTimeFormat = startDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const endDateFormat = endDate.toDateString();
+    const endTimeFormat = endDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            width: "40%",
-          }}
-        >
-          <Text>Start Date</Text>
-          <Button
-            onPress={() => this.showPicker("date", true)}
-            title={this.state.startDate.toLocaleString("en-US", {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            })}
+      <View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showStartDatePicker}>
+            <Text style={styles.pickerText}>Start Date: {startDateFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isStartDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleStartDateConfirm}
+            onCancel={this.hideStartDatePicker}
+            date={this.state.startDate}
           />
-          <Button
-            onPress={() => this.showPicker("time", true)}
-            title={this.state.startDate.toLocaleString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          />
-          {this.state.startShow && (
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <Text>Select: </Text>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={this.state.startDate}
-                mode={this.state.startMode}
-                display="spinner"
-                is24Hour={true}
-                onChange={this.onStartDateChange}
-              />
-            </View>
-          )}
         </View>
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            width: "40%",
-          }}
-        >
-          <Text>End Date</Text>
-          <Button
-            onPress={() => this.showPicker("date", false)}
-            title={this.state.endDate.toLocaleString([], {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            })}
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showStartTimePicker}>
+            <Text style={styles.pickerText}>Start Time: {startTimeFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isStartTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleStartTimeConfirm}
+            onCancel={this.hideStartTimePicker}
+            date={new Date()}
+            headerTextIOS="Pick a Start Time"
+            minuteInterval={5}
+            locale="en_GB"
+            is24Hour
+            display="spinner"
+            continueText="Select"
           />
-          <Button
-            onPress={() => this.showPicker("time", false)}
-            title={this.state.endDate.toLocaleString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+        </View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showEndDatePicker}>
+            <Text style={styles.pickerText}>End Date: {endDateFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isEndDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleEndDateConfirm}
+            onCancel={this.hideEndDatePicker}
+            date={this.state.endDate}
           />
-          {this.state.endShow && (
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <Text>Select: </Text>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={this.state.endDate}
-                mode={this.state.endMode}
-                is24Hour={true}
-                onChange={this.onEndDateChange}
-              />
-            </View>
-          )}
+        </View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showEndTimePicker}>
+            <Text style={styles.pickerText}>End Time: {endTimeFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isEndTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleEndTimeConfirm}
+            onCancel={this.hideEndTimePicker}
+            date={new Date()}
+            headerTextIOS="Pick an End Time"
+            minuteInterval={5}
+            locale="en_GB"
+            is24Hour
+            display="spinner"
+            continueText="Select"
+          />
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  pickerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  pickerText: {
+    fontSize: 16,
+    color: "#007aff",
+  },
+});
+
+export default DateTimeRangePicker;

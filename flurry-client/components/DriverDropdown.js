@@ -7,30 +7,49 @@ import {
   FlatList,
 } from "react-native";
 
-const dummyDrivers = [
-  { id: "1", name: "Max", slipIncidents: 5 },
-  { id: "2", name: "Peter", slipIncidents: 2 },
-  { id: "3", name: "John", slipIncidents: 10 },
-  { id: "4", name: "Jane", slipIncidents: 3 },
-];
-
-const DriverDropdown = ({ onSelectDriver }) => {
+const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState(null);
+  const [driverSlips, setDriverSlips] = useState(0);
 
   const handleDriverSelect = (driver) => {
+    const slipsForDriver = slips.filter((slip) => slip.driver_id === driver.id);
+    setDriverSlips(slipsForDriver.length);
     setSelectedDriver(driver);
     setIsExpanded(false);
-    onSelectDriver(driver.name);
+    onSelectDriver(driver.id);
   };
 
   const renderDriverItem = ({ item }) => (
     <TouchableOpacity
       style={styles.driverItem}
-      //onPress={() => handleDriverSelect(item)
+      onPress={() => handleDriverSelect(item)}
     >
       <Text style={styles.driverName}>{item.name}</Text>
+      <Text style={styles.driverSlipIncidents}>
+        Slip incidents: {item.slipIncidents}
+      </Text>
     </TouchableOpacity>
+  );
+  const slipsByDriver = slips.reduce((acc, slip) => {
+    acc[slip.driver_id] = (acc[slip.driver_id] || 0) + 1;
+    return acc;
+  }, {});
+
+  const maxSlipsDriverId = Object.keys(slipsByDriver).reduce((a, b) => {
+    return slipsByDriver[a] > slipsByDriver[b] ? a : b;
+  });
+
+  const minSlipsDriverId = Object.keys(slipsByDriver).reduce((a, b) => {
+    return slipsByDriver[a] < slipsByDriver[b] ? a : b;
+  });
+
+  const maxSlipsDriver = drivers.find(
+    (driver) => driver.id === maxSlipsDriverId
+  );
+
+  const minSlipsDriver = drivers.find(
+    (driver) => driver.id === minSlipsDriverId
   );
 
   return (
@@ -38,11 +57,8 @@ const DriverDropdown = ({ onSelectDriver }) => {
       <Text style={styles.dropdownTitle}>Pick a driver</Text>
       {selectedDriver ? (
         <Text style={styles.driverText}>
-          Number of slip incidents for {selectedDriver}:{" "}
-          {
-            dummyDrivers.find((driver) => driver.name === selectedDriver)
-              .slipIncidents
-          }
+          Number of slip incidents for {selectedDriver.name}:{" "}
+          {slips.filter((slip) => slip.driver_id === selectedDriver.id).length}
         </Text>
       ) : (
         <>
@@ -54,7 +70,7 @@ const DriverDropdown = ({ onSelectDriver }) => {
           </TouchableOpacity>
           {isExpanded && (
             <FlatList
-              data={dummyDrivers}
+              data={drivers}
               keyExtractor={(item) => item.id}
               renderItem={renderDriverItem}
               style={styles.driverList}
@@ -64,13 +80,15 @@ const DriverDropdown = ({ onSelectDriver }) => {
             <Text style={styles.boxTitle}>Analytics Summary</Text>
             <View style={styles.boxContent}>
               <Text style={styles.boxData}>
-                Driver with the most number of slip incidents: Max
+                Driver with the most number of slip incidents:{" "}
+                {maxSlipsDriver.name}
               </Text>
               <Text style={styles.boxData}>
-                Driver with the least number of slip incidents: Smith
+                Driver with the least number of slip incidents:{" "}
+                {minSlipsDriver.name}
               </Text>
               <Text style={styles.boxData}>
-                Total number of slips in the given date range: 23
+                Total number of slips in the given date range: {slips.length}
               </Text>
             </View>
           </View>

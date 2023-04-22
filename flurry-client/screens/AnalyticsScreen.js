@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import React from "react";
 import { View, Text, StyleSheet, SectionList } from "react-native";
 
@@ -7,6 +8,35 @@ import SlipSeverityChart from "../components/SlipSeverityChart";
 import { slipIncidents } from "../data/dummyData";
 
 export default class AnalyticsScreen extends React.Component {
+  state = {
+    slips: [],
+    selectedDrivers: [],
+    error: null,
+  };
+
+  componentDidMount() {
+    fetch("http://localhost:3000/slips")
+      .then((response) => response.json())
+      .then((data) => {
+        // Extract driver ids from the slips
+        const driverIds = [...new Set(data.map((slip) => slip.driver_id))];
+
+        // Fetch driver details for each driver id
+        Promise.all(
+          driverIds.map((id) =>
+            fetch(`http://localhost:3000/drivers/${id}`)
+              .then((response) => response.json())
+              .then((driver) => ({ id, ...driver }))
+          )
+        )
+          .then((drivers) => {
+            // Set the selectedDrivers state variable with the retrieved driver details
+            this.setState({ slips: data, selectedDrivers: drivers });
+          })
+          .catch((error) => this.setState({ error }));
+      })
+      .catch((error) => this.setState({ error }));
+  }
   handleDateRangeChange = (startDate, endDate) => {
     // Do something with the selected start and end dates
     //console.log('Selected date range:', startDate, endDate);
@@ -37,7 +67,13 @@ export default class AnalyticsScreen extends React.Component {
           },
           {
             title: "",
-            data: [<DriverDropdown onDriverSelect={this.handleDriverSelect} />],
+            data: [
+              <DriverDropdown
+                onDriverSelect={this.handleDriverSelect}
+                drivers={this.state.selectedDrivers}
+                slips = {this.state.slips}
+              />,
+            ],
           },
           {
             title: "",

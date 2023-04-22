@@ -21,6 +21,7 @@ class SlipsController {
             const d = await Driver.findOne({id: s.driver_id})
             return (d && d.company_id === req.query.company_id)
           }));
+          // eslint-disable-next-line
           return res.status(200).json(slips.filter((s, idx, arr) => {return filters[idx]}))
         } else {
           return res.status(200).json(slips)
@@ -46,6 +47,6 @@ class SlipsController {
         return res.status(500).json(err)
       });
   }; 
-};
+}
   
 export { SlipsController };

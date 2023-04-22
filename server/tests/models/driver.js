@@ -3,7 +3,7 @@
 import { Driver } from '../../src/models/driver.js';
 import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, before, afterEach } from 'mocha';
 
 describe('Testing Driver model', function() {
   before(function (done) {

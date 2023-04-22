@@ -1,10 +1,18 @@
 /* eslint-disable max-len */
 
 import { Manager } from '../../src/models/manager.js';
+import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, before, afterEach } from 'mocha';
 
 describe('Testing Manager model', function() {
+  before(function (done) {
+    const c = new Company({id: 'c1', name: 'Flurry'});
+    c.save().then(() => {
+      done();
+    }).catch(err => done(err))
+  });
+
   it('1. Creating new manager', function(done) {
     const m = new Manager({id: 'm1', name: 'Admin', company_id: "c1"});
     m.validate().then(() => {
@@ -24,6 +32,21 @@ describe('Testing Manager model', function() {
     .catch(err => {
       expect(err.errors.id).to.exist;
       done();
-    });
+    }).catch(err => done(err))
+  });
+
+  it('3. Invalid if referencing non-existing company id', function(done) {
+    const m = new Manager({id: 'm1', name: 'Admin', company_id: "ccc"});
+    m.save().then(() => done(new Error("Should have failed validation")))
+    .catch(err => {
+      expect(err.message).to.equal(`Invalid reference in manager: no company with id ${m.company_id} found`);
+      done();
+    }).catch(err => done(err))
+  });
+
+  afterEach(function (done) {
+    Manager.deleteMany().then(() => {
+      done()
+    }).catch(err => done(err))
   });
 });

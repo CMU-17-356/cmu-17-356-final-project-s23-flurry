@@ -2,14 +2,18 @@
 
 import { Slip } from '../../src/models/slip.js';
 import { Driver } from '../../src/models/driver.js';
+import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
 import { describe, it, before, afterEach } from 'mocha';
 
 describe('Testing Slip model', function() {
   before(function (done) {
-    const d = new Driver({id: 'd1', name: 'Driver', company_id: "c1"});
-    d.save().then(() => {
-      done();
+    const c = new Company({id: 'c1', name: 'Flurry'});
+    const d = new Driver({id: 'd1', name: 'Driver', company_id: 'c1'});
+    c.save().then(() => {
+      d.save().then(() => {
+        done();
+      }).catch(err => done(err))
     }).catch(err => done(err))
   });
 
@@ -35,7 +39,7 @@ describe('Testing Slip model', function() {
     .catch(err => {
       expect(err.errors.id).to.exist;
       done();
-    });
+    }).catch(err => done(err))
   });
 
   it('3. Invalid if latitude out of range', function(done) {
@@ -44,7 +48,7 @@ describe('Testing Slip model', function() {
     .catch(err => {
       expect(err.errors.latitude).to.exist;
       done();
-    });
+    }).catch(err => done(err))
   });
 
   it('4. Invalid if longitude out of range', function(done) {
@@ -53,7 +57,7 @@ describe('Testing Slip model', function() {
     .catch(err => {
       expect(err.errors.longitude).to.exist;
       done();
-    });
+    }).catch(err => done(err))
   });
 
   it('5. Invalid if slip score out of range', function(done) {
@@ -62,18 +66,18 @@ describe('Testing Slip model', function() {
     .catch(err => {
       expect(err.errors.slip_score).to.exist;
       done();
-    });
+    }).catch(err => done(err))
   });
 
   it('6. Invalid if duplicate id', function(done) {
     const s1 = new Slip({id: 's1', latitude: 90, longitude: 180, timestamp: Date.now(), driver_id: 'd1', slip_score: 15});
-    const s2 = new Slip({id: 's1', latitude: -54, longitude: 96, timestamp: Date.now(), driver_id: 'd2', slip_score: 74});
+    const s2 = new Slip({id: 's1', latitude: -54, longitude: 96, timestamp: Date.now(), driver_id: 'd1', slip_score: 74});
     s1.save().then(() => {
       s2.save().then(() => done(new Error("Should have failed to save")))
       .catch(err => {
-        expect(err.message).to.equal(`Duplicate key: id ${s1.id} already exists`);
+        expect(err.message).to.equal(`Duplicate key in slip: id ${s1.id} already exists`);
         done();
-      });
+      }).catch(err => done(err))
     }).catch(err => done(err))
   });
 
@@ -81,9 +85,9 @@ describe('Testing Slip model', function() {
     const s = new Slip({id: 's1', latitude: 90, longitude: 180, timestamp: Date.now(), driver_id: 'ddd', slip_score: 15});
     s.save().then(() => done(new Error("Should have failed validation")))
     .catch(err => {
-      expect(err.message).to.equal(`Invalid reference: no driver with id ${s.driver_id} found`);
+      expect(err.message).to.equal(`Invalid reference in slip: no driver with id ${s.driver_id} found`);
       done();
-    });
+    }).catch(err => done(err))
   });
 
   afterEach(function (done) {

@@ -2,19 +2,26 @@
 import { app, server } from '../../src/index.js';
 import { Slip } from "../../src/models/slip.js";
 import { Driver } from '../../src/models/driver.js';
+import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
 import { describe, it, before, beforeEach, after, afterEach } from 'mocha';
 import request from 'supertest';
 
 describe('Testing Slips controller', function() {
   before(function (done) {
+    const c1 = new Company({id: 'c1', name: 'Flurry'});
+    const c2 = new Company({id: 'c2', name: 'Dronut'});
     const d1 = new Driver({id: 'd1', name: 'Driver', company_id: "c1"});
     const d2 = new Driver({id: 'd2', name: 'Driver (2)', company_id: "c1"});
     const d3 = new Driver({id: 'd3', name: 'Driver (3)', company_id: "c2"});
-    d1.save().then(() => {
-      d2.save().then(() => {
-        d3.save().then(() => {
-          done();
+    c1.save().then(() => {
+      c2.save().then(() => {
+        d1.save().then(() => {
+          d2.save().then(() => {
+            d3.save().then(() => {
+              done();
+            }).catch(err => done(err))
+          }).catch(err => done(err))
         }).catch(err => done(err))
       }).catch(err => done(err))
     }).catch(err => done(err))

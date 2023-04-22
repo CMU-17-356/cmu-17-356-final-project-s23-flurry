@@ -54,7 +54,7 @@ slipSchema.post('validate', function(doc, next) {
     if (d) {
       next()
     } else {
-      next(new Error(`Invalid reference: no driver with id ${doc.driver_id} found`))
+      next(new Error(`Invalid reference in slip: no driver with id ${doc.driver_id} found`))
     }
   }).catch(err => next(err))
 });
@@ -62,12 +62,11 @@ slipSchema.post('validate', function(doc, next) {
 // validate unique id: https://mongoosejs.com/docs/middleware.html#error-handling-middleware
 slipSchema.post('save', function(error, doc, next) {
   if (error.name === 'MongoServerError' && error.code === 11000) {
-    next(new Error(`Duplicate key: id ${doc.id} already exists`));
+    next(new Error(`Duplicate key in slip: id ${doc.id} already exists`));
   } else {
     next();
   }
 });
 
 const Slip = model('Slip', slipSchema);
-
 export { Slip };

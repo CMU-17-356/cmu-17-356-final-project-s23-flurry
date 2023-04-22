@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import DatePicker from 'react-native-datepicker';
+import DatePicker from "react-native-datepicker";
 
 export default class DateTimeRangePicker extends React.Component {
   constructor(props) {

@@ -36,9 +36,9 @@ class SlipsController {
   getSlipById = async (req, res) => {
     const id = req.params.id
     Slip.findOne({id: id})
-      .then(user => {
-        if (user) {
-          return res.status(200).json(user)
+      .then(slip => {
+        if (slip) {
+          return res.status(200).json(slip)
         }
         return res.status(404).json(`Slip ${id} not found`)
       })

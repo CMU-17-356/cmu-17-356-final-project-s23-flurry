@@ -44,9 +44,11 @@ describe('Testing Manager model', function() {
     }).catch(err => done(err))
   });
 
-  afterEach(function (done) {
+  after(function (done) {
     Manager.deleteMany().then(() => {
-      done()
+      Company.deleteMany().then(() => {
+        done()
+      }).catch(err => done(err))
     }).catch(err => done(err))
   });
 });

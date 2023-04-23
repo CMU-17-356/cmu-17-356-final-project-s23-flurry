@@ -46,7 +46,7 @@ describe('Testing Slips controller', function() {
     it('2. View a non-existing slip', (done) => {
       const s = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date('2023-01-30T23:05:20.000-08:00'), driver_id: 'd1', slip_score: 50.88}); // not saved
       request(app)
-        .get(`/api/orders/${s.id}`)
+        .get(`/api/slips/${s.id}`)
         .then((res) => {
           expect(res.statusCode).to.equal(404);
           done();
@@ -178,8 +178,14 @@ describe('Testing Slips controller', function() {
   });
   
   after(function(done) {
-    server.close();
-    done();
+    Slip.deleteMany().then(() => {
+      Driver.deleteMany().then(() => {
+        Company.deleteMany().then(() => {
+          server.close();
+          done();
+        }).catch(err => done(err))
+      }).catch(err => done(err))
+    }).catch(err => done(err))     
   });
 
 });

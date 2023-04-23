@@ -25,4 +25,11 @@ describe('Testing Company model', function() {
       done();
     }).catch(err => done(err))
   });
+
+  after(function(done) {
+    Company.deleteMany().then(() => {
+      done();
+    }).catch(err => done(err))  
+  });
+  
 });

@@ -93,7 +93,17 @@ describe('Testing Slip model', function() {
   afterEach(function (done) {
     Slip.deleteMany().then(() => {
       done()
-    }).catch(err => done(err))     
+    }).catch(err => done(err))
+  });
+
+  after(function (done) {
+    Slip.deleteMany().then(() => {
+      Driver.deleteMany().then(() => {
+        Company.deleteMany().then(() => {
+          done()
+        }).catch(err => done(err))
+      }).catch(err => done(err))
+    }).catch(err => done(err))
   });
 
 });

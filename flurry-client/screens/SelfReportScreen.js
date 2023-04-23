@@ -1,121 +1,118 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { slipIncidents } from '../data/dummyData';
+import React, { useState, useEffect } from 'react';
+import { Text, TextInput, View, StyleSheet, Button } from 'react-native';
+import { usePosition } from 'use-position';
+import * as Location from 'expo-location';
 
-export default class SelfReportScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          timestamp: new Date(),
-          location: "date",
-          vehicleID: 1,
-          slipScore: 0
-        };
+function MyForm() {
+  // Get default values for timestamp and location
+  const defaultTimestamp = new Date().toLocaleString();
+
+  // Use geolocation-utils to get user's location
+  // const { latitude, longitude } = usePosition();
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  // console.log(location);
+  // Set up state for form inputs
+  const [vehicleId, setVehicleId] = useState('');
+  const [slipScore, setSlipScore] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  // console.log(latitude, longitude);
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Create object with form data
+    const formData = {
+      timestamp: new Date(defaultTimestamp),
+      latitude: latitude,
+      longitude: longitude,
+      // location: `${latitude}, ${longitude}`,
+      driver_id: vehicleId,
+      slip_score: slipScore,
+    };
+
+    // Do something with form data here (e.g. send to server)
+    console.log(formData);
+    // Send form data to backend
+    axios.post('https://example.com/api/form', formData)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+    };
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
       }
-    
 
-      onSlipScoreChange = (event, selectedScore) => {
-        const currentscore = selectedScore;
-        this.setState({
-            slipScore: currentscore,
-        });
-      };
-
-      onLocationChange = (event, selectedLocation) => {
-        const currentLocation = selectedLocation;
-        this.setState({
-            location: currentLocation,
-        });
-      };
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      setLatitude(location.coords.latitude)
+      setLongitude(location.coords.longitude)
+    })();
+  }, []);
 
 
-      onVehicleIDChange = (event, selectedVehicle) => {
-        const currentVehicle = selectedVehicle;
-        this.setState({
-            vehicleID: currentVehicle,
-        });
-      };
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Timestamp:</Text>
+      <TextInput style={styles.input} value={defaultTimestamp} editable={false} />
 
-      handleSubmit = () => {
-        // Do something with the form data, e.g. send it to a server
-        console.log(`Input 1 value: ${this.timestamp}`);
-        console.log(`Input 2 value: ${this.location}`);
-        console.log(`Input 3 value: ${this.vehicleID}`);
-        console.log(`Input 4 value: ${this.slipScore}`);
-      };
-    
+      <Text style={styles.label}>Location:</Text>
+      <TextInput style={styles.input} value={`${latitude}, ${longitude}`} editable={false} />
 
-  
-  render() {
-    return (
-        <View style={styles.container}>
-        <Text style={styles.heading}>Form Screen</Text>
-        <View style={styles.inputContainer}>
-        <Text>Timestamp: </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="timestamp"
-            value={this.state.timestamp}
-            // onChangeText={handleInput1Change}
-          />
-           <Text>Location: </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="location"
-            value={this.state.location}
-            onChangeText={this.onLocationChange}
-          />
-          <Text>Vehicle ID: </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="vehicleID"
-            value={this.state.vehicleID}
-            onChangeText={this.onVehicleIDChange}
-          />
-          <Text>Slip Score: </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="slipScore"
-            value={this.state.slipScore}
-            onChangeText={this.onSlipScoreChange}
-          />
-        </View>
-        <TouchableOpacity style={styles.submitButton} onPress={this.handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
-      </View>
-    );
-  }
+      <Text style={styles.label}>Vehicle ID:</Text>
+      <TextInput
+        style={styles.input}
+        value={vehicleId}
+        onChangeText={setVehicleId}
+        keyboardType="number-pad"
+      />
+
+      <Text style={styles.label}>Slip Score:</Text>
+      <TextInput
+        style={styles.input}
+        value={slipScore}
+        onChangeText={setSlipScore}
+        keyboardType="number-pad"
+      />
+
+      <Button onPress={handleSubmit} title="Submit" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      paddingHorizontal: 20,
-      paddingVertical: 30,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    heading: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      marginBottom: 40,
-      textAlign: 'center',
-      color: '#333',
-    },
-    inputContainer: {
-      marginTop: 20,
-      width: '90%', // updated width
-      paddingHorizontal: 20,
-    },
-    input: {
-      backgroundColor: '#eee',
-      borderRadius: 10,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      marginBottom: 16,
-      fontSize: 18,
-    },
-  });
-  
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+    width: '100%',
+    fontSize: 16,
+    height: 40 // Add this line to give same height to all input fields
+  },
+});
+
+export default MyForm;

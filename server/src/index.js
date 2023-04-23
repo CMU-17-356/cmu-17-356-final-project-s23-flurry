@@ -7,14 +7,13 @@ import cors from 'cors';
 dotenv.config();
 const app = express();
 const port = process.env.PORT; // eslint-disable-line
-const companyID = 'flurry';
 
 // connect to db
 let dbUrl = null;
 if (app.get('env') === 'development') {
   console.log(`⚡️connecting to development db`);
   dbUrl = 'mongodb+srv://xinyao:20001028@cluster0.kwf9tsb.mongodb.net/flurry_devdb?retryWrites=true&w=majority';
-} else if (app.get('env') === 'test') {
+} else if (app.get('env') === 'local_test') {
   console.log(`⚡️connecting to test db (local)`);
   dbUrl = 'mongodb://localhost:27017/flurry_testdb';
 } else if (app.get('env') === 'deploy_test') {
@@ -51,4 +50,4 @@ const server = app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
-export { app, server, companyID }; // for testing
+export { app, server }; // for testing

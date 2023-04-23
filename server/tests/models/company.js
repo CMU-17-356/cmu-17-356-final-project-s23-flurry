@@ -2,7 +2,7 @@
 
 import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, after } from 'mocha';
 
 describe('Testing Company model', function() {
   it('1. Creating new company', function(done) {

@@ -3,7 +3,7 @@
 import { Manager } from '../../src/models/manager.js';
 import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
-import { describe, it, before, afterEach } from 'mocha';
+import { describe, it, before, after } from 'mocha';
 
 describe('Testing Manager model', function() {
   before(function (done) {

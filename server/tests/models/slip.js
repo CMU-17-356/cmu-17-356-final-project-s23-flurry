@@ -4,7 +4,7 @@ import { Slip } from '../../src/models/slip.js';
 import { Driver } from '../../src/models/driver.js';
 import { Company } from '../../src/models/company.js';
 import { expect } from 'chai';
-import { describe, it, before, afterEach } from 'mocha';
+import { describe, it, before, afterEach, after } from 'mocha';
 
 describe('Testing Slip model', function() {
   before(function (done) {

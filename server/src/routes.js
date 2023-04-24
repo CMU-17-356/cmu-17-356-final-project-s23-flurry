@@ -1,28 +1,16 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import { SlipsController } from './controllers/slips.js';
+import { DriversController } from './controllers/drivers.js';
 
-const router = Router()
+const router = Router() // eslint-disable-line
 
-// const Users = new UsersController()
-// const Products = new ProductsController()
-// const Orders = new OrdersController()
-// const Merchants = new MerchantsController()
+const Slips = new SlipsController()
+const Drivers = new DriversController()
 
-// router.get('/users', Users.getUsers)
-// router.post('/users', Users.createUser)
-// router.get('/users/:username', Users.getUserByUsername)
-// router.delete('/users/:username', Users.deleteUserByUsername)
-// router.patch('/users/:username', Users.updateUserByUsername)
-// router.post('/users/:username/checkout', Users.checkoutUserCart)
+router.get('/slips', Slips.getSlips)
+router.get('/slips/:id', Slips.getSlipById)
 
-// router.get('/users/:username/history', Users.getUserOrderHistory)
-// router.get('/orders', Orders.getOrders)
-// router.get('/orders/:id', Orders.getOrderById)
-// router.post('/orders/:id/drone', Orders.assignDroneToOrder)
-// router.post('/orders/totals', Orders.calculateTotalPrice)
+router.get('/drivers', Drivers.getDrivers)
+router.get('/drivers/:id', Drivers.getDriverById)
 
-// router.get('/products', Products.getProducts)
-// router.get('/products/:title', Products.getProductByTitle)
-
-// router.get('/merchants/drones', Merchants.getDrones)
-
-export { router }
+export { router };

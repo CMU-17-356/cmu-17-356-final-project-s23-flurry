@@ -76,7 +76,7 @@ export default class MapScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Flurry Map</Text>
+        <Text>Filter markers:</Text>
 
         <View
           style={{

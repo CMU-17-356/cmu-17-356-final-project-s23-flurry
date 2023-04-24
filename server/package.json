@@ -7,8 +7,10 @@
   "scripts": {
     "start": "node src/index.js",
     "watch": "nodemon -q src/index.js",
-    "test": "NODE_ENV=test mocha --exit",
-    "deploy_test": "NODE_ENV=deploy_test mocha --exit --delayed"
+    "local-test": "NODE_ENV=local_test mocha --exit",
+    "deploy-test": "NODE_ENV=deploy_test mocha --exit --delayed",
+    "lint": "eslint .  --ext .js",
+    "lint-fix": "eslint --fix .  --ext .js"
   },
   "keywords": [],
   "author": "",
@@ -18,16 +20,12 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "got": "^12.5.3",
-    "mongoose": "^6.9.1",
-    "mongoose-sanitizer": "^1.0.0",
-    "mongoose-sanitizer-plugin": "^1.1.0",
-    "mongoose-unique-validator": "^3.1.0",
-    "sinon": "^15.0.1"
+    "mongoose": "^7.0.4",
+    "sinon": "^15.0.4"
   },
   "devDependencies": {
     "chai": "^4.3.7",
-    "concurrently": "^7.6.0",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
     "supertest": "^6.3.3"

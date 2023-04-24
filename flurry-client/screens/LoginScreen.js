@@ -1,7 +1,8 @@
+import Checkbox from "expo-checkbox";
 import { Image } from "expo-image";
 import * as ImageManipulator from "expo-image-manipulator";
 import React, { Component } from "react";
-import { Alert, Button, TextInput, View, StyleSheet } from "react-native";
+import { Alert, Button, TextInput, View, StyleSheet, Text } from "react-native";
 
 import FlurryIcon from "../assets/icon.png";
 
@@ -12,13 +13,28 @@ export default class LoginScreen extends Component {
     this.state = {
       username: "",
       password: "",
+      isLogin: false, // toggle login/signup
+      name: "",
+      company: "",
+      isManager: false, // toggle driver/manager
     };
   }
 
   onLogin() {
-    const { username, password } = this.state;
+    const { username, password, isLogin, name, company, isManager } =
+      this.state;
 
-    Alert.alert("Credentials", `${username} + ${password}`);
+    const loginInfo = `User: ${username}, PW: ${password}`;
+    const signupInfo =
+      `${name}, ` +
+      (isManager ? "Manager" : "Driver") +
+      " from " +
+      `${company}`;
+
+    Alert.alert(
+      (isLogin ? "Login " : "Sign Up ") + "Credentials",
+      isLogin ? loginInfo : loginInfo + "\n" + signupInfo
+    );
   }
 
   render() {
@@ -27,9 +43,25 @@ export default class LoginScreen extends Component {
         <Image
           source={FlurryIcon}
           contentFit="cover"
-		transition={1000}
-		style={styles.image}
+          transition={1000}
+          style={styles.image}
         />
+        {!this.state.isLogin && (
+          <>
+            <TextInput
+              value={this.state.name}
+              onChangeText={(name) => this.setState({ name })}
+              placeholder={"Name"}
+              style={styles.input}
+            />
+            <TextInput
+              value={this.state.company}
+              onChangeText={(company) => this.setState({ company })}
+              placeholder={"Company"}
+              style={styles.input}
+            />
+          </>
+        )}
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({ username })}
@@ -43,11 +75,34 @@ export default class LoginScreen extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
+        {!this.state.isLogin && (
+          <View style={styles.checkboxWrapper}>
+            <Checkbox
+              style={styles.checkbox}
+              value={this.state.isManager}
+              onValueChange={() =>
+                this.setState({ isManager: !this.state.isManager })
+              }
+              color={this.state.isManager ? "#007AFF" : undefined}
+            />
+            <Text style={styles.text}>Manager</Text>
+          </View>
+        )}
 
         <Button
-          title={"Login"}
+          title={this.state.isLogin ? "Login" : "Sign up"}
           style={styles.input}
           onPress={this.onLogin.bind(this)}
+        />
+        <Button
+          title={
+            this.state.isLogin
+              ? "Don't have an account? Sign up"
+              : "Already have an account? Log in"
+          }
+          style={styles.alt}
+          onPress={() => this.setState({ isLogin: !this.state.isLogin })}
+          color="#888888"
         />
       </View>
     );
@@ -68,9 +123,29 @@ const styles = StyleSheet.create({
     borderColor: "black",
     marginBottom: 10,
   },
+  alt: {
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    marginBottom: 10,
+  },
   image: {
-	  width: 100,
-	  height: 100,
-	  margin: 10,
+    width: 100,
+    height: 100,
+    margin: 10,
+  },
+  checkbox: {
+    margin: 8,
+  },
+  text: {
+    lineHeight: 37,
+  },
+  checkboxWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
+    paddingBottom: 5,
   },
 });

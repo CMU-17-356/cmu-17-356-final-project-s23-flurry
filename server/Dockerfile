@@ -12,5 +12,5 @@ RUN npm install
 COPY . .
 #TODO Run any build scripts here
 
-EXPOSE 80
+EXPOSE 3001
 CMD [ "npm", "start" ]

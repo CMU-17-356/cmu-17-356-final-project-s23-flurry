@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-// import { Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import AnalyticsScreen from "./screens/AnalyticsScreen";
 import LoginScreen from "./screens/LoginScreen";

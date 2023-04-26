@@ -15,5 +15,5 @@ Request body:
 - `slip_score`: number; has to be in [0, 100]
 
 Response type:
-- `201`: slip created successfully; a Slip object is returned as JSON
-- `404`: validation errors have occurred; field names where errors have occurred are mapped to the corresponding error messages
+- `201`: slip created successfully; a `Slip` object is returned as JSON
+- `404`: validation errors have occurred; field names where errors have occurred are mapped to corresponding error messages

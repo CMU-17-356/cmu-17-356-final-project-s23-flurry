@@ -47,6 +47,36 @@ class SlipsController {
         return res.status(500).json(err)
       });
   }; 
+
+  createSlip = async (req, res) => {
+    const body = req.body
+    
+    let slip = new Slip(body)
+    if (!("id" in body)) { // if no id specificed, use the Mongoose ObjectId instead
+      slip.id = slip._id.toString()
+    }
+    slip.save()
+      .then(() => {
+        res.status(201).json(slip);
+      })
+      .catch(err => {
+        if (err.name === "ValidationError") {
+          const errors = {}
+          Object.keys(err.errors).forEach((key) => {
+            errors[key] = err.errors[key].message
+          });
+        
+          return res.status(400).json(errors)
+        } else if (err.message.startsWith("Invalid reference")) {
+          return res.status(400).json({"driver_id": err.message})
+        } else if (err.message.startsWith("Duplicate key")) {
+          return res.status(400).json({"id": err.message})
+        } else {
+          console.log("createSlip: " + err)
+          return res.status(500).json(err)
+        }
+      });
+  };
 }
   
 export { SlipsController };

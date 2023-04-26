@@ -1,0 +1,37 @@
+name: Run linter and tests script for Expo frontend
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+        cache-dependency-path: "./flurry-client/package-lock.json"
+
+    - name: Install and check node packages
+      run: |
+        cd flurry-client
+        npm ci --legacy-peer-deps
+    - name: Run linter
+      run: |
+        cd flurry-client
+        npm run lint
+    - name: Check dependencies 
+      run: |
+        cd flurry-client
+        npm install -g npm-check
+        npm-check --skip-unused
+    - name: Run tests
+      run: | 
+        cd flurry-client
+        npm run test

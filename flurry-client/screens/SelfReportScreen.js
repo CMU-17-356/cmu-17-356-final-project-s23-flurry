@@ -1,7 +1,17 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable import/order */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
+/* eslint-disable prettier/prettier */
+// eslint-disable-next-line import/order
+
 import React, { useState, useEffect } from 'react';
 import { Text, TextInput, View, StyleSheet, Button } from 'react-native';
 import { usePosition } from 'use-position';
 import * as Location from 'expo-location';
+// import request from 'supertest';
+// import { app, server } from '../../src/index.js';
+import axios from 'axios';
 
 function MyForm() {
   // Get default values for timestamp and location
@@ -20,7 +30,7 @@ function MyForm() {
   // console.log(latitude, longitude);
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Create object with form data
@@ -36,13 +46,29 @@ function MyForm() {
     // Do something with form data here (e.g. send to server)
     console.log(formData);
     // Send form data to backend
-    axios.post('https://example.com/api/form', formData)
+    // axios.post('https://example.com/api/form', formData)
+    // .then(response => {
+    //   console.log(response.data);
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });
+
+    // const response = await request(app)
+    //   .post('/user')
+    //   .send(formData)
+    //   .expect(201);
+
+    //   expect(response.body).toHaveProperty('id');
+    //   expect(response.body.timestamp).toBe(formData.timestamp);
+    axios.post('/api/submit-data', formData)
     .then(response => {
       console.log(response.data);
     })
     .catch(error => {
       console.log(error);
     });
+
     };
 
   useEffect(() => {

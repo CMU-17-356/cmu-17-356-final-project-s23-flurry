@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "watch": "nodemon -q src/index.js",
+    "local-test": "NODE_ENV=local_test mocha --exit",
+    "deploy-test": "NODE_ENV=deploy_test mocha --exit --delayed",
+    "lint": "eslint .  --ext .js",
+    "lint-fix": "eslint --fix .  --ext .js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "got": "^12.5.3",
+    "mongoose": "^7.0.4",
+    "sinon": "^15.0.4"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "eslint": "^8.39.0",
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  }
+}

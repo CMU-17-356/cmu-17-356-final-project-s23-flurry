@@ -18,13 +18,16 @@ export default class MapScreen extends React.Component {
       endDate: initEndDate,
       endMode: "date",
       endShow: false,
-      markers: []
+      markers: [],
     };
   }
 
   async componentDidMount() {
     this.setState({
-      markers: await this.refreshMarkersList(this.state.startDate, this.state.endDate)
+      markers: await this.refreshMarkersList(
+        this.state.startDate,
+        this.state.endDate
+      ),
     });
   }
 
@@ -32,11 +35,14 @@ export default class MapScreen extends React.Component {
     const response = await fetch("https://flurry-backend.fly.dev/api/slips");
     const slipIncidents = await response.json();
 
-    var newMarkerList = [];
+    const newMarkerList = [];
     slipIncidents.forEach((incident) => {
-      incidentTimestampDate = new Date(incident.timestamp)
-      
-      if (incidentTimestampDate <= endDate && incidentTimestampDate >= startDate) {
+      const incidentTimestampDate = new Date(incident.timestamp);
+
+      if (
+        incidentTimestampDate <= endDate &&
+        incidentTimestampDate >= startDate
+      ) {
         newMarkerList.push({
           title: "Slip score: " + incident.slip_score,
           coordinates: {
@@ -71,7 +77,10 @@ export default class MapScreen extends React.Component {
     this.setState({
       endDate: selectedDate,
       endShow: false,
-      markers: await this.refreshMarkersList(this.state.startDate, selectedDate),
+      markers: await this.refreshMarkersList(
+        this.state.startDate,
+        selectedDate
+      ),
     });
   };
 
@@ -87,8 +96,6 @@ export default class MapScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Filter markers:</Text>
-
         <View
           style={{
             flexDirection: "row",

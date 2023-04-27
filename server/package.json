@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "watch": "nodemon -q src/index.js",
-    "test": "NODE_ENV=test mocha --exit",
+    "local-test": "NODE_ENV=local_test mocha --exit",
     "deploy-test": "NODE_ENV=deploy_test mocha --exit --delayed",
     "lint": "eslint .  --ext .js",
     "lint-fix": "eslint --fix .  --ext .js"
@@ -20,7 +20,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "got": "^12.5.3",
-    "mongoose": "^7.0.4",
+    "mongoose": "^7.0.5",
     "sinon": "^15.0.4"
   },
   "devDependencies": {

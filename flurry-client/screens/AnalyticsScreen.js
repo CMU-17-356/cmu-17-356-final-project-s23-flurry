@@ -15,7 +15,7 @@ export default class AnalyticsScreen extends React.Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:3000/slips")
+    fetch("https://flurry-backend.fly.dev/api/slips")
       .then((response) => response.json())
       .then((data) => {
         // Extract driver ids from the slips
@@ -24,7 +24,7 @@ export default class AnalyticsScreen extends React.Component {
         // Fetch driver details for each driver id
         Promise.all(
           driverIds.map((id) =>
-            fetch(`http://localhost:3000/drivers/${id}`)
+            fetch(`https://flurry-backend.fly.dev/api/drivers/${id}`)
               .then((response) => response.json())
               .then((driver) => ({ id, ...driver }))
           )
@@ -41,12 +41,13 @@ export default class AnalyticsScreen extends React.Component {
     // Do something with the selected start and end dates
     //console.log('Selected date range:', startDate, endDate);
   };
-  setSelectedDriver = (driverName) => {
-    // TODO: put something in here @Meghana
-  };
 
-  handleDriverSelect = (driverName) => {
-    this.setSelectedDriver(driverName);
+  handleDriverSelect = (driverId) => {
+    //using this driver id, get all rows where slip.driver_id == driverId.
+    const filteredSlips = this.state.slips.filter(
+      (slip) => slip.driver_id === driverId
+    );
+    // Do something with the filtered slips
   };
 
   render() {
@@ -69,9 +70,9 @@ export default class AnalyticsScreen extends React.Component {
             title: "",
             data: [
               <DriverDropdown
-                onDriverSelect={this.handleDriverSelect}
+                onSelectDriver={this.handleDriverSelect}
                 drivers={this.state.selectedDrivers}
-                slips = {this.state.slips}
+                slips={this.state.slips}
               />,
             ],
           },

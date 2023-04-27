@@ -26,11 +26,14 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
       onPress={() => handleDriverSelect(item)}
     >
       <Text style={styles.driverName}>{item.name}</Text>
-      <Text style={styles.driverSlipIncidents}>
-        Slip incidents: {item.slipIncidents}
-      </Text>
+      <Text style={styles.driverSlipIncidents}>Driver ID: {item.id}</Text>
     </TouchableOpacity>
   );
+
+  if (!drivers || !drivers.length) {
+    return null;
+  }
+
   const slipsByDriver = slips.reduce((acc, slip) => {
     acc[slip.driver_id] = (acc[slip.driver_id] || 0) + 1;
     return acc;

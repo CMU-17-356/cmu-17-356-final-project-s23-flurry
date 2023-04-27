@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
-import { slipIncidents } from "../data/dummyData";
+// import { slipIncidents } from "../data/dummyData";
 import styles from "../style";
 
 export default class MapScreen extends React.Component {
@@ -18,14 +18,25 @@ export default class MapScreen extends React.Component {
       endDate: initEndDate,
       endMode: "date",
       endShow: false,
-      markers: this.refreshMarkersList(initStartDate, initEndDate),
+      markers: []
     };
   }
 
-  refreshMarkersList(startDate, endDate) {
-    const newMarkerList = [];
+  async componentDidMount() {
+    this.setState({
+      markers: await this.refreshMarkersList(this.state.startDate, this.state.endDate)
+    });
+  }
+
+  async refreshMarkersList(startDate, endDate) {
+    const response = await fetch("https://flurry-backend.fly.dev/api/slips");
+    const slipIncidents = await response.json();
+
+    var newMarkerList = [];
     slipIncidents.forEach((incident) => {
-      if (incident.timestamp <= endDate && incident.timestamp >= startDate) {
+      incidentTimestampDate = new Date(incident.timestamp)
+      
+      if (incidentTimestampDate <= endDate && incidentTimestampDate >= startDate) {
         newMarkerList.push({
           title: "Slip score: " + incident.slip_score,
           coordinates: {
@@ -36,7 +47,7 @@ export default class MapScreen extends React.Component {
             "Driver: " +
             incident.driver_id +
             "\n" +
-            incident.timestamp.toLocaleString([], {
+            incidentTimestampDate.toLocaleString([], {
               year: "numeric",
               month: "numeric",
               day: "numeric",
@@ -49,18 +60,18 @@ export default class MapScreen extends React.Component {
     return newMarkerList;
   }
 
-  onStartDateChange = (_event, selectedDate) => {
+  onStartDateChange = async (_event, selectedDate) => {
     this.setState({
       startDate: selectedDate,
       startShow: false,
-      markers: this.refreshMarkersList(selectedDate, this.state.endDate),
+      markers: await this.refreshMarkersList(selectedDate, this.state.endDate),
     });
   };
-  onEndDateChange = (_event, selectedDate) => {
+  onEndDateChange = async (_event, selectedDate) => {
     this.setState({
       endDate: selectedDate,
       endShow: false,
-      markers: this.refreshMarkersList(this.state.startDate, selectedDate),
+      markers: await this.refreshMarkersList(this.state.startDate, selectedDate),
     });
   };
 

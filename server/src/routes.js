@@ -9,6 +9,7 @@ const Drivers = new DriversController()
 
 router.get('/slips', Slips.getSlips)
 router.get('/slips/:id', Slips.getSlipById)
+router.post('/slips', Slips.createSlip)
 
 router.get('/drivers', Drivers.getDrivers)
 router.get('/drivers/:id', Drivers.getDriverById)

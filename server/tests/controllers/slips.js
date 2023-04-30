@@ -171,6 +171,73 @@ describe('Testing Slips controller', function() {
     });
   });
 
+  describe('Create slips', () => {
+    it('1. Valid new slip with no id specified', function (done) {
+      request(app)
+        .post('/api/slips')
+        .send({ latitude: -87.46, longitude: 180, timestamp: 1645500000000, driver_id: 'd1', slip_score: 50.88 })
+        .then((res) => {
+            expect(res.statusCode).to.equal(201);
+            expect(res.body.id).to.equal(res.body._id);
+            done();
+        })
+        .catch((err) => done(err))
+    });
+
+    it('2. Valid new slip with id specified', function (done) {
+      request(app)
+        .post('/api/slips')
+        .send({ id: 's4', latitude: -87.46, longitude: 180, timestamp: 1645500000000, driver_id: 'd1', slip_score: 50.88 })
+        .then((res) => {
+            expect(res.statusCode).to.equal(201);
+            expect(res.body.id).to.equal('s4');
+            done();
+        })
+        .catch((err) => done(err))
+    });
+
+    it('3. Invalid new slip for duplicated id', function (done) {
+      const s1 = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date(1645500000000), driver_id: 'd1', slip_score: 50.88});
+      s1.save().then(() => {
+        request(app)
+          .post('/api/slips')
+          .send({ id: 's1', latitude: -87.46, longitude: 180, timestamp: 1645500000000, driver_id: 'd1', slip_score: 50.88 })
+          .then((res) => {
+              expect(res.statusCode).to.equal(400);
+              expect(res.body.id).to.exist;
+              done();
+          })
+          .catch((err) => done(err))
+      }).catch((err) => done(err))
+    });
+
+    it('4. Invalid new slip for invalid values', function (done) {
+      request(app)
+        .post('/api/slips')
+        .send({ latitude: -90.01, longitude: 180, timestamp: 'invalid', driver_id: 'd1', slip_score: -15 })
+        .then((res) => {
+            expect(res.statusCode).to.equal(400);
+            expect(res.body.latitude).to.exist;
+            expect(res.body.timestamp).to.exist;
+            expect(res.body.slip_score).to.exist;
+            done();
+        })
+        .catch((err) => done(err))
+    });
+
+    it('5. Invalid new slip for referencing non existing driver id', function (done) {
+      request(app)
+        .post('/api/slips')
+        .send({ latitude: -87.46, longitude: 180, timestamp: 1645500000000, driver_id: 'ddd', slip_score: 50.88 })
+        .then((res) => {
+            expect(res.statusCode).to.equal(400);
+            expect(res.body.driver_id).to.exist;
+            done();
+        })
+        .catch((err) => done(err))
+    });
+  });
+
   afterEach(function (done) {
     Slip.deleteMany().then(() => {
       done()

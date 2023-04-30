@@ -23,10 +23,28 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
   const renderDriverItem = ({ item }) => (
     <TouchableOpacity
       style={styles.driverItem}
-      onPress={() => handleDriverSelect(item)}
+      onPress={() => {
+        if (selectedDriver && selectedDriver.id === item.id) {
+          setSelectedDriver(null);
+          setIsExpanded(true);
+        } else {
+          const slipsForDriver = slips.filter(
+            (slip) => slip.driver_id === item.id
+          );
+          setDriverSlips(slipsForDriver.length);
+          setSelectedDriver(item);
+          setIsExpanded(false);
+          onSelectDriver(item.id);
+        }
+      }}
     >
       <Text style={styles.driverName}>{item.name}</Text>
-      <Text style={styles.driverSlipIncidents}>Driver ID: {item.id}</Text>
+      {selectedDriver && selectedDriver.id === item.id && (
+        <Text style={styles.driverSlipIncidents}>Pick a different driver</Text>
+      )}
+      {!selectedDriver && (
+        <Text style={styles.driverSlipIncidents}>Driver ID: {item.id}</Text>
+      )}
     </TouchableOpacity>
   );
 

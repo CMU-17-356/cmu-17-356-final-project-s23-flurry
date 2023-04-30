@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, SectionList } from "react-native";
 import DateTimeRangePicker from "../components/DateTimeRangePicker";
 import DriverDropdown from "../components/DriverDropdown";
 import SlipSeverityChart from "../components/SlipSeverityChart";
-import { slipIncidents } from "../data/dummyData";
+
 
 export default class AnalyticsScreen extends React.Component {
   state = {
@@ -78,7 +78,7 @@ export default class AnalyticsScreen extends React.Component {
           },
           {
             title: "",
-            data: [<SlipSeverityChart data={slipIncidents} />],
+            data: [<SlipSeverityChart data={this.state.slips} />],
           },
         ]}
         keyExtractor={(item, index) => index.toString()}

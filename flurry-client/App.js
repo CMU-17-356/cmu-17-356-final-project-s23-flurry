@@ -12,9 +12,8 @@ export default function App() {
     <View style={styles.container}>
       {/* <MapScreen /> */}
       {/* <AnalyticsScreen /> */}
-      {/*<LoginScreen />*/}
-      {/*<StatusBar style="auto" /> */}
-      <AnalyticsScreen />
+      <LoginScreen />
+      <StatusBar style="auto" />
     </View>
   );
 }

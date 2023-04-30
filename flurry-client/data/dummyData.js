@@ -1,16 +1,16 @@
 export const slipIncidents = [
   {
     id: "SLIP001",
-    latitude: 37.7749,
-    longitude: -122.4194,
+    latitude: 40.457473,
+    longitude: -79.953488,
     timestamp: new Date("2022-04-05T12:30:00Z"),
     driver_id: "DRV001",
     slip_score: 80,
   },
   {
     id: "SLIP002",
-    latitude: 37.7749,
-    longitude: -122.4194,
+    latitude: 40.457015,
+    longitude: -79.941041,
     timestamp: new Date("2022-04-05T13:30:00Z"),
     driver_id: "DRV002",
     slip_score: 65,
@@ -25,8 +25,8 @@ export const slipIncidents = [
   },
   {
     id: "SLIP004",
-    latitude: 37.7749,
-    longitude: -122.4194,
+    latitude: 40.473637,
+    longitude: -79.996891,
     timestamp: new Date("2022-04-06T08:30:00Z"),
     driver_id: "DRV004",
     slip_score: 50,

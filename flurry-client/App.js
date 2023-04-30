@@ -1,13 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SelfReportScreen from './screens/SelfReportScreen'
-import { NavigationContainer } from "@react-navigation/native";
+/* eslint-disable no-unused-vars */
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
-import AnalyticsScreen from "./screens/AnalyticsScreen";
-import LoginScreen from "./screens/LoginScreen";
-import MapScreen from "./screens/MapScreen";
+import SelfReportScreen from "./screens/SelfReportScreen";
 import styles from "./style";
 
 export default function App() {

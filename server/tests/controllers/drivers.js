@@ -53,7 +53,6 @@ describe('Testing Drivers controller', function() {
       request(app)
         .get(`/api/drivers`)
         .then((res) => {
-          console.log(res.body)
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.length(3);
           expect(res.body[0].id).to.equal('d1');

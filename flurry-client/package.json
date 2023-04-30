@@ -43,14 +43,14 @@
     "react-native-maps": "^1.6.0",
     "react-native-modal-datetime-picker": "^15.0.0",
     "react-native-range-slider-expo": "^1.4.3",
-    "react-native-safe-area-context": "^4.5.1",
+    "react-native-safe-area-context": "^4.5.2",
     "react-native-screens": "~3.20.0",
     "react-native-svg": "^13.9.0",
     "rn-range-slider": "^2.2.2",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.21.5",
     "@babel/eslint-parser": "^7.21.3",
     "@storybook/preset-typescript": "^3.0.0",
     "eslint": "^8.39.0"

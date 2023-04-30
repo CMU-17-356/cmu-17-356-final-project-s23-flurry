@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { PieChart } from "react-native-chart-kit";

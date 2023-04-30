@@ -1,7 +1,6 @@
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import moment from "moment";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 const MIN_DATE = moment("2021-01-01", "YYYY-MM-DD").toDate();
 const MAX_DATE = moment().toDate();

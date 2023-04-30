@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
+import { StyleSheet } from "react-native";
 
 const dummyDrivers = [
   { id: "1", name: "Max", slipIncidents: 5 },

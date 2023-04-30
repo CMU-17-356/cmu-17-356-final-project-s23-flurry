@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
 import { Button, Text, View } from "react-native";

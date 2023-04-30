@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import Checkbox from "expo-checkbox";
 import { Image } from "expo-image";
 import * as ImageManipulator from "expo-image-manipulator";

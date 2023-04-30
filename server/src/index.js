@@ -7,6 +7,7 @@ import cors from 'cors';
 dotenv.config();
 const app = express();
 const port = process.env.PORT || "3001"; // eslint-disable-line
+
 // connect to db
 let dbUrl = null;
 if (app.get('env') === 'development') {

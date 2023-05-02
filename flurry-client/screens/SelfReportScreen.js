@@ -1,7 +1,7 @@
 import * as Location from "expo-location";
 import fetch from "node-fetch";
 import { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { Button, Text, TextInput, View, StyleSheet } from "react-native";
 
 function MyForm() {
   // Get default values for timestamp and location

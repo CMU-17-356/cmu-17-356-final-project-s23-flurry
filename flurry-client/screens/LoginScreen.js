@@ -40,7 +40,7 @@ export default class LoginScreen extends Component {
         id: username,
         password,
         name,
-        company_id: company,
+        company_id: "c_" + company.toLowerCase(),
       };
     }
 

@@ -55,10 +55,11 @@ export default class AnalyticsScreen extends React.Component {
         contentContainerStyle={{
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "white",
         }}
         sections={[
           {
-            title: "Pick a date range for Analytics",
+            title: "",
             data: [
               <DateTimeRangePicker
                 onDateRangeChange={this.handleDateRangeChange}

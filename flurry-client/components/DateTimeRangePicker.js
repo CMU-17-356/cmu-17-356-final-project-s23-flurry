@@ -1,55 +1,171 @@
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import moment from "moment";
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const MIN_DATE = moment("2021-01-01", "YYYY-MM-DD").toDate();
-const MAX_DATE = moment().toDate();
-export default class DateTimeRangePicker extends React.Component {
-  state = {
-    startDate: MIN_DATE,
-    endDate: MAX_DATE,
+class DateTimeRangePicker extends Component {
+  constructor(props) {
+    super(props);
+    const currentDate = new Date();
+    this.state = {
+      isStartDatePickerVisible: false,
+      isStartTimePickerVisible: false,
+      isEndDatePickerVisible: false,
+      isEndTimePickerVisible: false,
+      startDate: new Date(2020, 0, 1, 0, 0),
+      endDate: currentDate,
+    };
+  }
+
+  showStartDatePicker = () => {
+    this.setState({ isStartDatePickerVisible: true });
   };
 
-  handleValuesChange = (values) => {
-    const [start, end] = values;
-    this.setState({
-      startDate: moment(MIN_DATE).add(start, "days").toDate(),
-      endDate: moment(MIN_DATE).add(end, "days").toDate(),
-    });
+  hideStartDatePicker = () => {
+    this.setState({ isStartDatePickerVisible: false });
+  };
 
-    // Call the onDateRangeChange prop with the selected start and end dates
+  handleStartDateConfirm = (date) => {
+    this.setState({ startDate: date });
+    this.hideStartDatePicker();
     this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
   };
 
-  formatRangeText = () => {
-    const { startDate, endDate } = this.state;
-    const formattedStartDate = moment(startDate).format("MMM DD, YYYY");
-    const formattedEndDate = moment(endDate).format("MMM DD, YYYY");
-    return `${formattedStartDate} - ${formattedEndDate}`;
+  showStartTimePicker = () => {
+    this.setState({ isStartTimePickerVisible: true });
+  };
+
+  hideStartTimePicker = () => {
+    this.setState({ isStartTimePickerVisible: false });
+  };
+
+  handleStartTimeConfirm = (time) => {
+    const { startDate } = this.state;
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const newStartDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      hours,
+      minutes
+    );
+    this.setState({ startDate: newStartDate });
+    this.hideStartTimePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+  };
+
+  showEndDatePicker = () => {
+    this.setState({ isEndDatePickerVisible: true });
+  };
+
+  hideEndDatePicker = () => {
+    this.setState({ isEndDatePickerVisible: false });
+  };
+
+  handleEndDateConfirm = (date) => {
+    this.setState({ endDate: date });
+    this.hideEndDatePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+  };
+
+  showEndTimePicker = () => {
+    this.setState({ isEndTimePickerVisible: true });
+  };
+
+  hideEndTimePicker = () => {
+    this.setState({ isEndTimePickerVisible: false });
+  };
+
+  handleEndTimeConfirm = (time) => {
+    const { endDate } = this.state;
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const newEndDate = new Date(
+      endDate.getFullYear(),
+      endDate.getMonth(),
+      endDate.getDate(),
+      hours,
+      minutes
+    );
+    this.setState({ endDate: newEndDate });
+    this.hideEndTimePicker();
+    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
   };
 
   render() {
     const { startDate, endDate } = this.state;
-    const startDays = moment(endDate).diff(MIN_DATE, "days");
-    const endDays = moment(MAX_DATE).diff(startDate, "days");
+    const startDateFormat = startDate.toDateString();
+    const startTimeFormat = startDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const endDateFormat = endDate.toDateString();
+    const endTimeFormat = endDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     return (
-      <View style={styles.container}>
-        <MultiSlider
-          values={[0, startDays + endDays]}
-          sliderLength={250}
-          onValuesChange={this.handleValuesChange}
-          min={0}
-          max={startDays + endDays}
-          allowOverlap={false}
-          snapped
-          markerStyle={styles.sliderMarkerStyle}
-          selectedStyle={styles.sliderSelectedStyle}
-          unselectedStyle={styles.sliderUnselectedStyle}
-          trackStyle={styles.sliderTrackStyle}
-        />
-        <View style={styles.rangeTextContainer}>
-          <Text style={styles.rangeText}>{this.formatRangeText()}</Text>
+      <View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showStartDatePicker}>
+            <Text style={styles.pickerText}>Start Date: {startDateFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isStartDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleStartDateConfirm}
+            onCancel={this.hideStartDatePicker}
+            date={this.state.startDate}
+          />
+        </View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showStartTimePicker}>
+            <Text style={styles.pickerText}>Start Time: {startTimeFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isStartTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleStartTimeConfirm}
+            onCancel={this.hideStartTimePicker}
+            date={new Date()}
+            headerTextIOS="Pick a Start Time"
+            minuteInterval={5}
+            locale="en_GB"
+            is24Hour
+            display="spinner"
+            continueText="Select"
+          />
+        </View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showEndDatePicker}>
+            <Text style={styles.pickerText}>End Date: {endDateFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isEndDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleEndDateConfirm}
+            onCancel={this.hideEndDatePicker}
+            date={this.state.endDate}
+          />
+        </View>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity onPress={this.showEndTimePicker}>
+            <Text style={styles.pickerText}>End Time: {endTimeFormat}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={this.state.isEndTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleEndTimeConfirm}
+            onCancel={this.hideEndTimePicker}
+            date={new Date()}
+            headerTextIOS="Pick an End Time"
+            minuteInterval={5}
+            locale="en_GB"
+            is24Hour
+            display="spinner"
+            continueText="Select"
+          />
         </View>
       </View>
     );
@@ -57,37 +173,19 @@ export default class DateTimeRangePicker extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  pickerContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  sliderMarkerStyle: {
-    height: 20,
-    width: 20,
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "black",
-  },
-  sliderSelectedStyle: {
-    backgroundColor: "blue",
-  },
-  sliderUnselectedStyle: {
-    backgroundColor: "lightblue",
-  },
-  sliderTrackStyle: {
-    height: 4,
-    backgroundColor: "lightgray",
-  },
-  rangeTextContainer: {
-    marginTop: 10,
-  },
-  rangeText: {
+  pickerText: {
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#007aff",
   },
 });
+
+export default DateTimeRangePicker;

@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
@@ -30,9 +30,9 @@ export default function DriverTabNavigator() {
         component={SelfReportScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons
+            <MaterialIcons
               color={focused ? "blue" : "gray"}
-              name={"analytics"}
+              name={"report"}
               size={26}
               style={{ marginBottom: -3 }}
             />

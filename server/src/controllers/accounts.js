@@ -11,7 +11,7 @@ class AccountsController {
     } else if (req.query.type == "driver") {
       user = new Driver(body)
     } else {
-      return res.status(400).json({"type": `Invalid account type ${req.query.type}`})
+      return res.status(404).json({"type": `Invalid account type ${req.query.type}`})
     }
 
     user.save()
@@ -46,7 +46,7 @@ class AccountsController {
     } else if (req.query.type == "driver") {
       user = await Driver.findOne({id: body.id})
     } else {
-      return res.status(400).json({"type": `Invalid account type ${req.query.type}`})
+      return res.status(404).json({"type": `Invalid account type ${req.query.type}`})
     }
     if (user === null) return res.status(400).json({"id": `${req.query.type} id ${body.id} not found`})
 

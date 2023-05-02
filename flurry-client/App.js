@@ -6,7 +6,6 @@ import AnalyticsScreen from "./screens/AnalyticsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MapScreen from "./screens/MapScreen";
 import SelfReportScreen from "./screens/SelfReportScreen";
-
 import styles from "./style";
 
 export default function App() {

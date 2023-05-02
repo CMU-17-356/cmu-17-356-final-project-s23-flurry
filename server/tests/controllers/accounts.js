@@ -75,7 +75,7 @@ describe('Testing Accounts controller', function() {
         .post('/api/accounts?type=account')
         .send({ id: "newaccount", name: "invalid type", password: "password", company_id: "c1" })
         .then((res) => {
-					expect(res.statusCode).to.equal(400);
+					expect(res.statusCode).to.equal(404);
 					expect(res.body.type).to.exist;
 					done();
         })
@@ -149,7 +149,7 @@ describe('Testing Accounts controller', function() {
         .post('/api/accounts')
         .send({ id: "newaccount", name: "missing type", password: "password", company_id: "c1" })
         .then((res) => {
-					expect(res.statusCode).to.equal(400);
+					expect(res.statusCode).to.equal(404);
 					expect(res.body.type).to.exist;
 					done();
         })

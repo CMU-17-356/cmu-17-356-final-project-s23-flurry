@@ -15,10 +15,12 @@ export default function App() {
       <MainTabNavigator />
     </NavigationContainer>
     // <View style={styles.container}>
-    //   {/* <MapScreen /> */}
-    //   {/* <AnalyticsScreen /> */}
-    //   {/* <LoginScreen /> */}
+    //   <SelfReportScreen />
+    //   <AnalyticsScreen />
     //   <StatusBar style="auto" />
     // </View>
+    //   {/* <MapScreen /> */}
+    //   {/* <LoginScreen /> */}
+      
   );
 }

@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 import { useState, useEffect } from "react";
 import { Button, Text, TextInput, View, StyleSheet } from "react-native";
 

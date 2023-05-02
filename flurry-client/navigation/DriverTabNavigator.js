@@ -5,9 +5,10 @@ import React from "react";
 // import { Platform, TouchableHighlight, Text, Alert, View } from 'react-native';
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import MapScreen from "../screens/MapScreen";
+import SelfReportScreen from "../screens/SelfReportScreen";
 
 const Tab = createBottomTabNavigator();
-export default function MainTabNavigator() {
+export default function DriverTabNavigator() {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -25,8 +26,8 @@ export default function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Analytics"
-        component={AnalyticsScreen}
+        name="Self-Report"
+        component={SelfReportScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons

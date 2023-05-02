@@ -6,7 +6,6 @@ import DateTimeRangePicker from "../components/DateTimeRangePicker";
 import DriverDropdown from "../components/DriverDropdown";
 import SlipSeverityChart from "../components/SlipSeverityChart";
 
-
 export default class AnalyticsScreen extends React.Component {
   state = {
     slips: [],

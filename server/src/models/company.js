@@ -4,7 +4,7 @@ const companySchema = ({
   id: {
     type: String,
     required: true,
-    match: /^[a-z0-9]+$/,
+    match: /^[A-Za-z0-9_]+$/,
   },
   name: {
     type: String,

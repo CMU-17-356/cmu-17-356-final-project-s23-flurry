@@ -9,7 +9,7 @@ import { describe, it, before, afterEach, after } from 'mocha';
 describe('Testing Slip model', function() {
   before(function (done) {
     const c = new Company({id: 'c1', name: 'Flurry'});
-    const d = new Driver({id: 'd1', name: 'Driver', company_id: 'c1'});
+    const d = new Driver({id: 'd1', name: 'Driver', company_id: 'c1', password: "password"});
     c.save().then(() => {
       d.save().then(() => {
         done();
@@ -18,9 +18,9 @@ describe('Testing Slip model', function() {
   });
 
   it('1. Creating new slip', function(done) {
-    const s = new Slip({id: 's1', latitude: -87.46, longitude: 180, timestamp: new Date('2022-02-22T10:08:00.000-05:00'), driver_id: 'd1', slip_score: 50.88});
+    const s = new Slip({id: 's_S1', latitude: -87.46, longitude: 180, timestamp: new Date('2022-02-22T10:08:00.000-05:00'), driver_id: 'd1', slip_score: 50.88});
     s.save().then(() => {
-      expect(s.id).to.equal('s1');
+      expect(s.id).to.equal('s_S1');
       expect(s.latitude).to.equal(-87.46);
       expect(s.longitude).to.equal(180);
       expect(s.timestamp.valueOf()).to.equal(new Date(1645542480000).valueOf());
@@ -33,8 +33,8 @@ describe('Testing Slip model', function() {
     });
   });
 
-  it('2. Invalid if id is not alphanumeric', function(done) {
-    const s = new Slip({id: 's1_', latitude: 45, longitude: -45, timestamp: Date.now(), driver_id: 'd1', slip_score: 99.99});
+  it('2. Invalid if id is not alphanumeric or underscore', function(done) {
+    const s = new Slip({id: 's1-', latitude: 45, longitude: -45, timestamp: Date.now(), driver_id: 'd1', slip_score: 99.99});
     s.save().then(() => done(new Error("Should have failed validation")))
     .catch(err => {
       expect(err.errors.id).to.exist;

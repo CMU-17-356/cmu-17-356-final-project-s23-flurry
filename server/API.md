@@ -21,7 +21,7 @@ Response type:
 
 ### Accounts
 
-#### Create new account: POST `/accounts?type={maanger, driver}`
+#### Create new account: POST `/accounts?type={manager, driver}`
 Request body:
 - `id`: string; has to be alphanumeric or underscore and unique
 - `password`: string; cannot contain space characters, has to have length between 8 and 16

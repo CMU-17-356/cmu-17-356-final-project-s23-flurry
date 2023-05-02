@@ -5,7 +5,19 @@ const managerSchema = Schema({
   id: {
     type: String,
     required: true,
-    match: /^[a-z0-9]+$/,
+    match: /^[A-Za-z0-9_]+$/,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    match: /^[^\s]+$/,
+    validate: {
+      validator: function(pw) {
+        return pw.length >= 8 && pw.length <= 16;
+      },
+      message: 'Password length must be between 8 and 16',
+    },
   },
   name: {
     type: String,
@@ -26,6 +38,15 @@ managerSchema.post('validate', function(doc, next) {
       next(new Error(`Invalid reference in manager: no company with id ${doc.company_id} found`))
     }
   }).catch(err => next(err))
+});
+
+// validate unique id: https://mongoosejs.com/docs/middleware.html#error-handling-middleware
+managerSchema.post('save', function(error, doc, next) {
+  if (error.name === 'MongoServerError' && error.code === 11000) {
+    next(new Error(`Duplicate key in manager: id ${doc.id} already exists`));
+  } else {
+    next();
+  }
 });
 
 const Manager = model('Manager', managerSchema);

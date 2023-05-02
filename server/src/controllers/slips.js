@@ -57,7 +57,7 @@ class SlipsController {
     }
     slip.save()
       .then(() => {
-        res.status(201).json(slip);
+        return res.status(201).json(slip)
       })
       .catch(err => {
         if (err.name === "ValidationError") {

@@ -11,9 +11,9 @@ describe('Testing Slips controller', function() {
   before(function (done) {
     const c1 = new Company({id: 'c1', name: 'Flurry'});
     const c2 = new Company({id: 'c2', name: 'Dronut'});
-    const d1 = new Driver({id: 'd1', name: 'Driver', company_id: "c1"});
-    const d2 = new Driver({id: 'd2', name: 'Driver (2)', company_id: "c1"});
-    const d3 = new Driver({id: 'd3', name: 'Driver (3)', company_id: "c2"});
+    const d1 = new Driver({id: 'd1', name: 'Driver', company_id: "c1", password: "password1"});
+    const d2 = new Driver({id: 'd2', name: 'Driver (2)', company_id: "c1", password: "password2"});
+    const d3 = new Driver({id: 'd3', name: 'Driver (3)', company_id: "c2", password: "password3"});
     c1.save().then(() => {
       c2.save().then(() => {
         d1.save().then(() => {

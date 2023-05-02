@@ -6,9 +6,9 @@ import { describe, it, after } from 'mocha';
 
 describe('Testing Company model', function() {
   it('1. Creating new company', function(done) {
-    const c = new Company({id: 'c1', name: 'Flurry'});
+    const c = new Company({id: 'c_C1', name: 'Flurry'});
     c.save().then(() => {
-      expect(c.id).to.equal('c1');
+      expect(c.id).to.equal('c_C1');
       expect(c.name).to.equal('Flurry');
       done();
     })

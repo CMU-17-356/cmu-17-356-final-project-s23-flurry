@@ -53,7 +53,9 @@ class AccountsController {
     if (user.password === body.password) {
       return res.status(200).json(user)
     } else {
-      return res.status(400).json({"password": `incorrect password ${body.password} for ${req.query.type} id ${body.id}`})
+      return res.status(400).json({
+        "password": `incorrect password ${body.password} for ${req.query.type} id ${body.id}`
+      })
     }
   }
 }

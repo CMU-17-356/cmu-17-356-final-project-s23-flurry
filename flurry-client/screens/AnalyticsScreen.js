@@ -19,9 +19,26 @@ export default class AnalyticsScreen extends React.Component {
   };
 
   componentDidMount() {
-    // re-fetch all drivers slips
-    this.refreshDrivers()
-    this.refreshSlips()
+    const { username } = this.props;
+    // fetch company first
+    console.log("bruhhh", username)
+    fetch(`https://flurry-backend.fly.dev/api/drivers/${username}`)
+      .then((response) => response.json())
+      .then((manager) => {
+        this.setState(prevState => ({
+          ...prevState,
+          conditions: {
+            ...prevState.conditions,
+            company_id: manager.company_id,
+          },
+        }), () => {
+          console.log(this.state.conditions)
+          // re-fetch all drivers slips
+          this.refreshDrivers()
+          this.refreshSlips()
+        });
+      })
+      .catch((error) => this.setState({ error }));
   }
 
   refreshDrivers() {

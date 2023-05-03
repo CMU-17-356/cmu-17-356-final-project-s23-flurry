@@ -13,7 +13,7 @@ export default class AnalyticsScreen extends React.Component {
     drivers: [],
     error: null,
     conditions: {
-      driver_id: null,
+      company_id: null,
       after: null,
       before: null,
     },
@@ -40,8 +40,8 @@ export default class AnalyticsScreen extends React.Component {
 
   refreshSlips() {
     let conditions = "?"
-    if (this.state.conditions.driver_id != null) {
-      conditions += "driver_id=" + this.state.conditions.driver_id + "&"
+    if (this.state.conditions.company_id != null) {
+      conditions += "company_id=" + this.state.conditions.company_id + "&"
     }
     if (this.state.conditions.after != null) {
       conditions += "after=" + this.state.conditions.after + "&"

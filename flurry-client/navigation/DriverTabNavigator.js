@@ -6,6 +6,7 @@ import React from "react";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import MapScreen from "../screens/MapScreen";
 import SelfReportScreen from "../screens/SelfReportScreen";
+import styles from "../style";
 
 const Tab = createBottomTabNavigator();
 export default function DriverTabNavigator() {
@@ -17,7 +18,7 @@ export default function DriverTabNavigator() {
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              color={focused ? "blue" : "gray"}
+              color={focused ? styles.themedBlue : "gray"}
               name={"location-outline"}
               size={26}
               style={{ marginBottom: -3 }}
@@ -31,7 +32,7 @@ export default function DriverTabNavigator() {
         options={{
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
-              color={focused ? "blue" : "gray"}
+              color={focused ? styles.themedBlue : "gray"}
               name={"report"}
               size={26}
               style={{ marginBottom: -3 }}

@@ -59,11 +59,11 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
 
   const maxSlipsDriverId = Object.keys(slipsByDriver).reduce((a, b) => {
     return slipsByDriver[a] > slipsByDriver[b] ? a : b;
-  });
+  }, "N/A");
 
   const minSlipsDriverId = Object.keys(slipsByDriver).reduce((a, b) => {
     return slipsByDriver[a] < slipsByDriver[b] ? a : b;
-  });
+  }, "N/A");
 
   const maxSlipsDriver = drivers.find(
     (driver) => driver.id === maxSlipsDriverId
@@ -102,11 +102,11 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
             <View style={styles.boxContent}>
               <Text style={styles.boxData}>
                 Driver with the most number of slip incidents:{" "}
-                {maxSlipsDriver.name}
+                {maxSlipsDriver ? maxSlipsDriver.name : "N/A"}
               </Text>
               <Text style={styles.boxData}>
                 Driver with the least number of slip incidents:{" "}
-                {minSlipsDriver.name}
+                {maxSlipsDriver ? minSlipsDriver.name : "N/A"}
               </Text>
               <Text style={styles.boxData}>
                 Total number of slips in the given date range: {slips.length}

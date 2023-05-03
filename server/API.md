@@ -4,7 +4,21 @@
 - All endpoints may return 500 with error messages if internal server errors occurred
 - Refer to [object data model](https://github.com/CMU-17-356/cmu-17-356-final-project-s23-flurry/wiki/Object-Data-Model) for JSON schema when an object is returned
 
+
 ### Slips
+
+#### Get all slips: GET `/slips?before=...&after=...&company_id=...`
+Query parameters (all optional):
+- `before` and `after`: epoch time as a number; filter by latest and earliest date range (inclusive)
+- `company_id`: string; filter by company associated with the driver of that slip, must corresponding to a valid company id
+
+Response type:
+- `200`: return a list of `Slip` objects
+
+#### Get a slip by id: GET `/slips/:id`
+Response type:
+- `200`: return a `Slip` object
+- `404`: no slip with the given id found
 
 #### Create new slip: POST `/slips`
 Request body:
@@ -18,6 +32,30 @@ Request body:
 Response type:
 - `201`: slip created successfully; a `Slip` object is returned as JSON
 - `400`: validation errors have occurred; field names where errors have occurred are mapped to corresponding error messages
+
+
+### Drivers
+
+#### Get all drivers: GET `/drivers?company_id=...`
+Query parameters (all optional):
+- `company_id`: string; filter by associated company, must corresponding to a valid company id
+
+Response type:
+- `200`: return a list of `Driver` objects
+
+#### Get a driver by id: GET `/drivers/:id`
+Response type:
+- `200`: return a `Driver` object
+- `404`: no driver with the given id found
+
+
+### Managers
+
+#### Get a manager by id: GET `/managers/:id`
+Response type:
+- `200`: return a `Manager` object
+- `404`: no manager with the given id found
+
 
 ### Accounts
 

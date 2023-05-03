@@ -6,7 +6,6 @@ import DateTimeRangePicker from "../components/DateTimeRangePicker";
 import DriverDropdown from "../components/DriverDropdown";
 import SlipSeverityChart from "../components/SlipSeverityChart";
 
-
 export default class AnalyticsScreen extends React.Component {
   state = {
     slips: [],
@@ -95,10 +94,11 @@ export default class AnalyticsScreen extends React.Component {
         contentContainerStyle={{
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "white",
         }}
         sections={[
           {
-            title: "Pick a date range for Analytics",
+            title: "",
             data: [
               <DateTimeRangePicker
                 onDateRangeChange={this.handleDateRangeChange}

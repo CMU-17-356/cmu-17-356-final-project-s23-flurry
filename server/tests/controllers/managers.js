@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { describe, it, before, after } from 'mocha';
 import request from 'supertest';
 
-describe('Testing Drivers controller', function() {
+describe('Testing Managers controller', function() {
   before(function (done) {
     const c1 = new Company({id: 'c1', name: 'Flurry'});
     const m1 = new Manager({id: 'm_M1', name: 'Admin', company_id: "c1", password: "password"});

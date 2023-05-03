@@ -21,8 +21,7 @@ export default class AnalyticsScreen extends React.Component {
   componentDidMount() {
     const { username } = this.props;
     // fetch company first
-    console.log("bruhhh", username)
-    fetch(`https://flurry-backend.fly.dev/api/drivers/${username}`)
+    fetch(`https://flurry-backend.fly.dev/api/managers/${username}`)
       .then((response) => response.json())
       .then((manager) => {
         this.setState(prevState => ({
@@ -32,7 +31,6 @@ export default class AnalyticsScreen extends React.Component {
             company_id: manager.company_id,
           },
         }), () => {
-          console.log(this.state.conditions)
           // re-fetch all drivers slips
           this.refreshDrivers()
           this.refreshSlips()
@@ -43,7 +41,7 @@ export default class AnalyticsScreen extends React.Component {
 
   refreshDrivers() {
     // refresh drivers
-    fetch("https://flurry-backend.fly.dev/api/drivers")
+    fetch(`https://flurry-backend.fly.dev/api/drivers?company_id=${this.state.conditions.company_id}`)
       .then((response) => response.json())
       .then((drivers) => {
         this.setState(prevState => ({
@@ -56,13 +54,13 @@ export default class AnalyticsScreen extends React.Component {
 
   refreshSlips() {
     let conditions = "?"
-    if (this.state.conditions.company_id != null) {
+    if (this.state.conditions.company_id) {
       conditions += "company_id=" + this.state.conditions.company_id + "&"
     }
-    if (this.state.conditions.after != null) {
+    if (this.state.conditions.after) {
       conditions += "after=" + this.state.conditions.after + "&"
     }
-    if (this.state.conditions.before != null) {
+    if (this.state.conditions.before) {
       conditions += "before=" + this.state.conditions.before + "&"
     }
     conditions = conditions.slice(0, -1)

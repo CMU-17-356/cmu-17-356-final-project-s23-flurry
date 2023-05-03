@@ -1,3 +1,4 @@
+import { createStackNavigator } from "@react-navigation/stack";
 import Checkbox from "expo-checkbox";
 import { Image } from "expo-image";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -11,9 +12,10 @@ export default class LoginScreen extends Component {
     super(props);
 
     this.state = {
+      props,
       username: "",
       password: "",
-      isLogin: false, // toggle login/signup
+      isLogin: true, // toggle login/signup
       name: "",
       company: "",
       isManager: false, // toggle driver/manager
@@ -21,20 +23,53 @@ export default class LoginScreen extends Component {
   }
 
   onLogin() {
-    const { username, password, isLogin, name, company, isManager } =
+    const { props, username, password, isLogin, name, company, isManager } =
       this.state;
 
-    const loginInfo = `User: ${username}, PW: ${password}`;
-    const signupInfo =
-      `${name}, ` +
-      (isManager ? "Manager" : "Driver") +
-      " from " +
-      `${company}`;
+    let formData;
+    let apiCall;
+    if (isLogin) {
+      apiCall = "login";
+      formData = {
+        id: username,
+        password,
+      };
+    } else {
+      apiCall = "accounts";
+      formData = {
+        id: username,
+        password,
+        name,
+        company_id: "c_" + company.toLowerCase(),
+      };
+    }
 
-    Alert.alert(
-      (isLogin ? "Login " : "Sign Up ") + "Credentials",
-      isLogin ? loginInfo : loginInfo + "\n" + signupInfo
-    );
+    const role = isManager ? "manager" : "driver";
+
+    fetch("https://flurry-backend.fly.dev/api/" + apiCall + "?type=" + role, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => {
+        const status = res["status"];
+        if (status === 400) {
+          Alert.alert("Invalid fields");
+        } else if (status === 404) {
+          Alert.alert("Invalid query param type");
+        } else {
+          if (isManager) {
+            this.props.navigation.navigate("Analytics");
+          } else {
+            this.props.navigation.navigate("Driver Info");
+          }
+        }
+      })
+      .catch((error) => {
+        console.log("There was a problem with the fetch operation:", error);
+      });
   }
 
   render() {
@@ -75,19 +110,17 @@ export default class LoginScreen extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-        {!this.state.isLogin && (
-          <View style={styles.checkboxWrapper}>
-            <Checkbox
-              style={styles.checkbox}
-              value={this.state.isManager}
-              onValueChange={() =>
-                this.setState({ isManager: !this.state.isManager })
-              }
-              color={this.state.isManager ? "#007AFF" : undefined}
-            />
-            <Text style={styles.text}>Manager</Text>
-          </View>
-        )}
+        <View style={styles.checkboxWrapper}>
+          <Checkbox
+            style={styles.checkbox}
+            value={this.state.isManager}
+            onValueChange={() =>
+              this.setState({ isManager: !this.state.isManager })
+            }
+            color={this.state.isManager ? "#007AFF" : undefined}
+          />
+          <Text style={styles.text}>Manager</Text>
+        </View>
 
         <Button
           title={this.state.isLogin ? "Login" : "Sign up"}
@@ -114,6 +147,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "white",
+    height: "100%",
+    width: "100%",
+    paddingTop: "5%",
   },
   input: {
     width: 200,

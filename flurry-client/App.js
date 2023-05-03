@@ -2,7 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 
-import MainTabNavigator from "./navigation/MainTabNavigator";
+import DriverTabNavigator from "./navigation/DriverTabNavigator";
+import MainStackNavigator from "./navigation/MainStackNavigator";
 import AnalyticsScreen from "./screens/AnalyticsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MapScreen from "./screens/MapScreen";
@@ -11,16 +12,15 @@ import styles from "./style";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <MainTabNavigator />
+    <NavigationContainer independent={true}>
+      <MainStackNavigator />
     </NavigationContainer>
     // <View style={styles.container}>
-    //   <SelfReportScreen />
-    //   <AnalyticsScreen />
+    //   {/* <SelfReportScreen />
+    //   <AnalyticsScreen /> */}
+    //   {/* <MapScreen /> */}
+    //   <LoginScreen />
     //   <StatusBar style="auto" />
     // </View>
-    //   {/* <MapScreen /> */}
-    //   {/* <LoginScreen /> */}
-      
   );
 }

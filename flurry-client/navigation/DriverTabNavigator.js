@@ -1,13 +1,15 @@
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
 // import { Platform, TouchableHighlight, Text, Alert, View } from 'react-native';
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import MapScreen from "../screens/MapScreen";
+import SelfReportScreen from "../screens/SelfReportScreen";
+import styles from "../style";
 
 const Tab = createBottomTabNavigator();
-export default function MainTabNavigator() {
+export default function DriverTabNavigator() {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -16,7 +18,7 @@ export default function MainTabNavigator() {
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              color={focused ? "blue" : "gray"}
+              color={focused ? styles.themedBlue : "gray"}
               name={"location-outline"}
               size={26}
               style={{ marginBottom: -3 }}
@@ -25,13 +27,13 @@ export default function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Analytics"
-        component={AnalyticsScreen}
+        name="Self-Report"
+        component={SelfReportScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons
-              color={focused ? "blue" : "gray"}
-              name={"analytics"}
+            <MaterialIcons
+              color={focused ? styles.themedBlue : "gray"}
+              name={"report"}
               size={26}
               style={{ marginBottom: -3 }}
             />

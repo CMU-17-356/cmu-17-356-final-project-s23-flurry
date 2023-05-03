@@ -76,16 +76,17 @@ export default class AnalyticsScreen extends React.Component {
     });
   };
 
-  handleDriverSelect = (driverId) => {
-    this.setState(prevState => ({
-      ...prevState,
-      conditions: {
-        ...prevState.conditions,
-        driver_id: driverId,
-      }
-    }), () => {
-      this.refreshSlips()
-    });
+  // NOT filtering slips here when driver is selected
+  handleDriverSelect = (driver_id) => {
+    // this.setState(prevState => ({
+    //   ...prevState,
+    //   conditions: {
+    //     ...prevState.conditions,
+    //     driver_id: driverId,
+    //   }
+    // }), () => {
+    //   this.refreshSlips()
+    // });
   };
 
   render() {

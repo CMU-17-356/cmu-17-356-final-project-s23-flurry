@@ -142,7 +142,7 @@ class DateTimeRangePicker extends Component {
             onCancel={this.hideStartTimePicker}
             date={new Date()}
             headerTextIOS="Pick a Start Time"
-            minuteInterval={5}
+            minuteInterval={1}
             locale="en_GB"
             is24Hour
             display="spinner"
@@ -172,7 +172,7 @@ class DateTimeRangePicker extends Component {
             onCancel={this.hideEndTimePicker}
             date={new Date()}
             headerTextIOS="Pick an End Time"
-            minuteInterval={5}
+            minuteInterval={1}
             locale="en_GB"
             is24Hour
             display="spinner"

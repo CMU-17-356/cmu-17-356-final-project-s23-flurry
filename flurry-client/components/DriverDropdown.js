@@ -12,14 +12,6 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
   const [selectedDriver, setSelectedDriver] = useState(null);
   const [driverSlips, setDriverSlips] = useState(0);
 
-  const handleDriverSelect = (driver) => {
-    const slipsForDriver = slips.filter((slip) => slip.driver_id === driver.id);
-    setDriverSlips(slipsForDriver.length);
-    setSelectedDriver(driver);
-    setIsExpanded(false);
-    onSelectDriver(driver.id);
-  };
-
   const renderDriverItem = ({ item }) => (
     <TouchableOpacity
       style={styles.driverItem}
@@ -76,45 +68,44 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.dropdownTitle}>Pick a driver</Text>
-      {selectedDriver ? (
+      {selectedDriver && (
         <Text style={styles.driverText}>
-          Number of slip incidents for {selectedDriver.name}:{" "}
+          # slip incidents for {selectedDriver.name}:{" "}
           {slips.filter((slip) => slip.driver_id === selectedDriver.id).length}
         </Text>
-      ) : (
-        <>
-          <TouchableOpacity
-            style={styles.dropdownHeader}
-            onPress={() => setIsExpanded(!isExpanded)}
-          >
-            <Text style={styles.dropdownHeaderText}>Select a driver</Text>
-          </TouchableOpacity>
-          {isExpanded && (
-            <FlatList
-              data={drivers}
-              keyExtractor={(item) => item.id}
-              renderItem={renderDriverItem}
-              style={styles.driverList}
-            />
-          )}
-          <View style={styles.box}>
-            <Text style={styles.boxTitle}>Analytics Summary</Text>
-            <View style={styles.boxContent}>
-              <Text style={styles.boxData}>
-                Driver with the most number of slip incidents:{" "}
-                {maxSlipsDriver ? maxSlipsDriver.name : "N/A"}
-              </Text>
-              <Text style={styles.boxData}>
-                Driver with the least number of slip incidents:{" "}
-                {maxSlipsDriver ? minSlipsDriver.name : "N/A"}
-              </Text>
-              <Text style={styles.boxData}>
-                Total number of slips in the given date range: {slips.length}
-              </Text>
-            </View>
-          </View>
-        </>
       )}
+      {<>
+        <TouchableOpacity
+          style={styles.dropdownHeader}
+          onPress={() => setIsExpanded(!isExpanded)}
+        >
+          <Text style={styles.dropdownHeaderText}>Select a driver</Text>
+        </TouchableOpacity>
+        {isExpanded && (
+          <FlatList
+            data={drivers}
+            keyExtractor={(item) => item.id}
+            renderItem={renderDriverItem}
+            style={styles.driverList}
+          />
+        )}
+        <View style={styles.box}>
+          <Text style={styles.boxTitle}>Analytics Summary</Text>
+          <View style={styles.boxContent}>
+            <Text style={styles.boxData}>
+              Driver with the most number of slip incidents:{" "}
+              {maxSlipsDriver ? maxSlipsDriver.name : "N/A"}
+            </Text>
+            <Text style={styles.boxData}>
+              Driver with the least number of slip incidents:{" "}
+              {maxSlipsDriver ? minSlipsDriver.name : "N/A"}
+            </Text>
+            <Text style={styles.boxData}>
+              Total number of slips in the given date range: {slips.length}
+            </Text>
+          </View>
+        </View>
+      </>}
     </View>
   );
 };

@@ -12,18 +12,18 @@ import SelfReportScreen from "../screens/SelfReportScreen";
 
 const Stack = createStackNavigator();
 export default function MainStackNavigator() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
 
   return (
     <Stack.Navigator>
       {/* <Stack.Screen name="Home" component={LoginScreen} /> */}
       <Stack.Screen name="Home">
-        {props => <LoginScreen {...props} setUsername={setUsername} />}
+        {(props) => <LoginScreen {...props} setUsername={setUsername} />}
       </Stack.Screen>
       <Stack.Screen name="Driver Info" component={DriverTabNavigator} />
       {/* <Stack.Screen name="Analytics" component={AnalyticsScreen} /> */}
       <Stack.Screen name="Analytics">
-        {props => <AnalyticsScreen {...props} username={username} />}
+        {(props) => <AnalyticsScreen {...props} username={username} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

@@ -16,7 +16,7 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
     const slipsForDriver = slips.filter((slip) => slip.driver_id === driver.id);
     setDriverSlips(slipsForDriver.length);
     setSelectedDriver(driver);
-    setIsExpanded(false);
+    setIsExpanded(true);
     onSelectDriver(driver.id);
   };
 
@@ -39,12 +39,7 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
       }}
     >
       <Text style={styles.driverName}>{item.name}</Text>
-      {selectedDriver && selectedDriver.id === item.id && (
-        <Text style={styles.driverSlipIncidents}>Pick a different driver</Text>
-      )}
-      {!selectedDriver && (
-        <Text style={styles.driverSlipIncidents}>Driver ID: {item.id}</Text>
-      )}
+      <Text style={styles.driverSlipIncidents}>Driver ID: {item.id}</Text>
     </TouchableOpacity>
   );
 
@@ -76,6 +71,20 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.dropdownTitle}>Pick a driver</Text>
+      <TouchableOpacity
+        style={styles.dropdownHeader}
+        onPress={() => setIsExpanded(!isExpanded)}
+      >
+        <Text style={styles.dropdownHeaderText}>Select a driver</Text>
+      </TouchableOpacity>
+      {isExpanded && (
+        <FlatList
+          data={drivers}
+          keyExtractor={(item) => item.id}
+          renderItem={renderDriverItem}
+          style={styles.driverList}
+        />
+      )}
       {selectedDriver ? (
         <Text style={styles.driverText}>
           Number of slip incidents for {selectedDriver.name}:{" "}
@@ -83,20 +92,6 @@ const DriverDropdown = ({ onSelectDriver, drivers, slips }) => {
         </Text>
       ) : (
         <>
-          <TouchableOpacity
-            style={styles.dropdownHeader}
-            onPress={() => setIsExpanded(!isExpanded)}
-          >
-            <Text style={styles.dropdownHeaderText}>Select a driver</Text>
-          </TouchableOpacity>
-          {isExpanded && (
-            <FlatList
-              data={drivers}
-              keyExtractor={(item) => item.id}
-              renderItem={renderDriverItem}
-              style={styles.driverList}
-            />
-          )}
           <View style={styles.box}>
             <Text style={styles.boxTitle}>Analytics Summary</Text>
             <View style={styles.boxContent}>

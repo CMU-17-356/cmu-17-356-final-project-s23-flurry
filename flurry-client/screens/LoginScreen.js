@@ -61,6 +61,7 @@ export default class LoginScreen extends Component {
           Alert.alert("Invalid query param type");
         } else {
           if (isManager) {
+            props.setUsername(username)
             this.props.navigation.navigate("Analytics");
           } else {
             this.props.navigation.navigate("Driver Info");

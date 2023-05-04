@@ -9,44 +9,98 @@ import SlipSeverityChart from "../components/SlipSeverityChart";
 export default class AnalyticsScreen extends React.Component {
   state = {
     slips: [],
-    selectedDrivers: [],
+    drivers: [],
     error: null,
+    conditions: {
+      company_id: null,
+      after: null,
+      before: null,
+    },
   };
 
   componentDidMount() {
-    fetch("https://flurry-backend.fly.dev/api/slips")
+    const { username } = this.props;
+    // fetch company first
+    fetch(`https://flurry-backend.fly.dev/api/managers/${username}`)
       .then((response) => response.json())
-      .then((data) => {
-        // Extract driver ids from the slips
-        const driverIds = [...new Set(data.map((slip) => slip.driver_id))];
-
-        // Fetch driver details for each driver id
-        Promise.all(
-          driverIds.map((id) =>
-            fetch(`https://flurry-backend.fly.dev/api/drivers/${id}`)
-              .then((response) => response.json())
-              .then((driver) => ({ id, ...driver }))
-          )
-        )
-          .then((drivers) => {
-            // Set the selectedDrivers state variable with the retrieved driver details
-            this.setState({ slips: data, selectedDrivers: drivers });
-          })
-          .catch((error) => this.setState({ error }));
+      .then((manager) => {
+        this.setState(prevState => ({
+          ...prevState,
+          conditions: {
+            ...prevState.conditions,
+            company_id: manager.company_id,
+          },
+        }), () => {
+          // re-fetch all drivers slips
+          this.refreshDrivers()
+          this.refreshSlips()
+        });
       })
       .catch((error) => this.setState({ error }));
   }
+
+  refreshDrivers() {
+    // refresh drivers
+    fetch(`https://flurry-backend.fly.dev/api/drivers?company_id=${this.state.conditions.company_id}`)
+      .then((response) => response.json())
+      .then((drivers) => {
+        this.setState(prevState => ({
+          ...prevState,
+          drivers: drivers,
+        }));
+      })
+      .catch((error) => this.setState({ error }));
+  }
+
+  refreshSlips() {
+    let conditions = "?"
+    if (this.state.conditions.company_id) {
+      conditions += "company_id=" + this.state.conditions.company_id + "&"
+    }
+    if (this.state.conditions.after) {
+      conditions += "after=" + this.state.conditions.after + "&"
+    }
+    if (this.state.conditions.before) {
+      conditions += "before=" + this.state.conditions.before + "&"
+    }
+    conditions = conditions.slice(0, -1)
+
+    // refresh slips
+    fetch(`https://flurry-backend.fly.dev/api/slips${conditions}`)
+      .then((response) => response.json())
+      .then((slips) => {
+        this.setState(prevState => ({
+          ...prevState,
+          slips: slips,
+        }));
+      })
+      .catch((error) => this.setState({ error }));
+  }
+
   handleDateRangeChange = (startDate, endDate) => {
-    // Do something with the selected start and end dates
-    //console.log('Selected date range:', startDate, endDate);
+    this.setState(prevState => ({
+      ...prevState,
+      conditions: {
+        ...prevState.conditions,
+        after: startDate.getTime(),
+        before: endDate.getTime(),
+      }
+    }), () => {
+      this.refreshSlips()
+    });
   };
 
-  handleDriverSelect = (driverId) => {
-    //using this driver id, get all rows where slip.driver_id == driverId.
-    const filteredSlips = this.state.slips.filter(
-      (slip) => slip.driver_id === driverId
-    );
-    // Do something with the filtered slips
+  // NOT filtering slips here when driver is selected
+  handleDriverSelect = (driver_id) => {
+    // this.setState(prevState => ({
+    //   ...prevState,
+    //   conditions: {
+    //     ...prevState.conditions,
+    //     driver_id: driverId,
+    //   }
+    // }), () => {
+    //   this.refreshSlips()
+    // });
   };
 
   render() {
@@ -71,7 +125,7 @@ export default class AnalyticsScreen extends React.Component {
             data: [
               <DriverDropdown
                 onSelectDriver={this.handleDriverSelect}
-                drivers={this.state.selectedDrivers}
+                drivers={this.state.drivers}
                 slips={this.state.slips}
               />,
             ],

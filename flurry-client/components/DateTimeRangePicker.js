@@ -11,7 +11,7 @@ class DateTimeRangePicker extends Component {
       isStartTimePickerVisible: false,
       isEndDatePickerVisible: false,
       isEndTimePickerVisible: false,
-      startDate: new Date(2020, 0, 1, 0, 0),
+      startDate: new Date(2000, 0, 1, 0, 0),
       endDate: currentDate,
     };
   }
@@ -25,9 +25,12 @@ class DateTimeRangePicker extends Component {
   };
 
   handleStartDateConfirm = (date) => {
-    this.setState({ startDate: date });
-    this.hideStartDatePicker();
-    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    this.setState({ 
+      startDate: date,
+      isStartDatePickerVisible: false
+    }, () => {
+      this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    });
   };
 
   showStartTimePicker = () => {
@@ -49,9 +52,12 @@ class DateTimeRangePicker extends Component {
       hours,
       minutes
     );
-    this.setState({ startDate: newStartDate });
-    this.hideStartTimePicker();
-    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    this.setState({ 
+      startDate: newStartDate,
+      isStartTimePickerVisible: false
+    }, () => {
+      this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    });
   };
 
   showEndDatePicker = () => {
@@ -63,9 +69,12 @@ class DateTimeRangePicker extends Component {
   };
 
   handleEndDateConfirm = (date) => {
-    this.setState({ endDate: date });
-    this.hideEndDatePicker();
-    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    this.setState({ 
+      endDate: date,
+      isEndDatePickerVisible: false
+    }, () => {
+      this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    });
   };
 
   showEndTimePicker = () => {
@@ -87,9 +96,12 @@ class DateTimeRangePicker extends Component {
       hours,
       minutes
     );
-    this.setState({ endDate: newEndDate });
-    this.hideEndTimePicker();
-    this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    this.setState({ 
+      endDate: newEndDate,
+      isEndTimePickerVisible: false
+    }, () => {
+      this.props.onDateRangeChange(this.state.startDate, this.state.endDate);
+    });
   };
 
   render() {
@@ -130,7 +142,7 @@ class DateTimeRangePicker extends Component {
             onCancel={this.hideStartTimePicker}
             date={new Date()}
             headerTextIOS="Pick a Start Time"
-            minuteInterval={5}
+            minuteInterval={1}
             locale="en_GB"
             is24Hour
             display="spinner"
@@ -160,7 +172,7 @@ class DateTimeRangePicker extends Component {
             onCancel={this.hideEndTimePicker}
             date={new Date()}
             headerTextIOS="Pick an End Time"
-            minuteInterval={5}
+            minuteInterval={1}
             locale="en_GB"
             is24Hour
             display="spinner"

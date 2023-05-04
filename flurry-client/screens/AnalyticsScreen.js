@@ -24,70 +24,78 @@ export default class AnalyticsScreen extends React.Component {
     fetch(`https://flurry-backend.fly.dev/api/managers/${username}`)
       .then((response) => response.json())
       .then((manager) => {
-        this.setState(prevState => ({
-          ...prevState,
-          conditions: {
-            ...prevState.conditions,
-            company_id: manager.company_id,
-          },
-        }), () => {
-          // re-fetch all drivers slips
-          this.refreshDrivers()
-          this.refreshSlips()
-        });
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            conditions: {
+              ...prevState.conditions,
+              company_id: manager.company_id,
+            },
+          }),
+          () => {
+            // re-fetch all drivers slips
+            this.refreshDrivers();
+            this.refreshSlips();
+          }
+        );
       })
       .catch((error) => this.setState({ error }));
   }
 
   refreshDrivers() {
     // refresh drivers
-    fetch(`https://flurry-backend.fly.dev/api/drivers?company_id=${this.state.conditions.company_id}`)
+    fetch(
+      `https://flurry-backend.fly.dev/api/drivers?company_id=${this.state.conditions.company_id}`
+    )
       .then((response) => response.json())
       .then((drivers) => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           ...prevState,
-          drivers: drivers,
+          drivers,
         }));
       })
       .catch((error) => this.setState({ error }));
   }
 
   refreshSlips() {
-    let conditions = "?"
+    let conditions = "?";
     if (this.state.conditions.company_id) {
-      conditions += "company_id=" + this.state.conditions.company_id + "&"
+      conditions += "company_id=" + this.state.conditions.company_id + "&";
     }
     if (this.state.conditions.after) {
-      conditions += "after=" + this.state.conditions.after + "&"
+      conditions += "after=" + this.state.conditions.after + "&";
     }
     if (this.state.conditions.before) {
-      conditions += "before=" + this.state.conditions.before + "&"
+      conditions += "before=" + this.state.conditions.before + "&";
     }
-    conditions = conditions.slice(0, -1)
+    conditions = conditions.slice(0, -1);
 
     // refresh slips
     fetch(`https://flurry-backend.fly.dev/api/slips${conditions}`)
       .then((response) => response.json())
       .then((slips) => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           ...prevState,
-          slips: slips,
+          slips,
         }));
       })
       .catch((error) => this.setState({ error }));
   }
 
   handleDateRangeChange = (startDate, endDate) => {
-    this.setState(prevState => ({
-      ...prevState,
-      conditions: {
-        ...prevState.conditions,
-        after: startDate.getTime(),
-        before: endDate.getTime(),
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        conditions: {
+          ...prevState.conditions,
+          after: startDate.getTime(),
+          before: endDate.getTime(),
+        },
+      }),
+      () => {
+        this.refreshSlips();
       }
-    }), () => {
-      this.refreshSlips()
-    });
+    );
   };
 
   // NOT filtering slips here when driver is selected

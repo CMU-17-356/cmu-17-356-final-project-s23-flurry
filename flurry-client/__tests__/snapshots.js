@@ -1,6 +1,6 @@
 import renderer from "react-test-renderer";
 
-import LoginScreen from "../Screens/LoginScreen";
+import LoginScreen from "../screens/LoginScreen";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import MapScreen from "../screens/MapScreen";
 
